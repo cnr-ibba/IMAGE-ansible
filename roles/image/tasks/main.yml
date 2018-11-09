@@ -1,0 +1,13 @@
+
+- name: Copy maintenance page
+  copy: src=maintenance.html dest=/usr/share/nginx/html owner=root group=root
+
+- name: Disable default configuration by removing link
+  when: nginxinstalled is success
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Copy nginx configuration for image stuff
+  template: src=image.conf dest=/etc/nginx/conf.d/image.conf
+  notify: Reload Nginx
