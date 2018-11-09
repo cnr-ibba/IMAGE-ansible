@@ -45,7 +45,7 @@
     delete: yes
 
 # enable Nginx
-# - name: Enable NgINX
-#   ufw:
-#     rule: allow
-#     name: Nginx HTTP
+- name: Enable NgINX
+  ufw:
+    rule: allow
+    name: Nginx HTTP
