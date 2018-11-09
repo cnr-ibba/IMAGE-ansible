@@ -1,0 +1,7 @@
+
+- hosts: digitalocean
+  remote_user: root
+  roles:
+    - apt
+    - nginx
+    - ufw

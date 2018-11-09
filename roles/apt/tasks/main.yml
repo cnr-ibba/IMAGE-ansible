@@ -1,0 +1,15 @@
+
+- name: Update repositories cache and install "aptitude" package
+  apt:
+    name: aptitude
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+
+- name: Remove useless packages from the cache
+  apt:
+    autoclean: yes
