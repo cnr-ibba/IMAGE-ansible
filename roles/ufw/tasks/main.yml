@@ -7,6 +7,7 @@
     ufw:
       state: enabled
 
+  # https://github.com/christurnertv/digital-ocean-ansible/blob/4dce08b49b874469b8b7a6a51bacc48340bcfb4a/tasks/ufw.yml#L9
   - name: Configure ufw defaults
     ufw: direction={{ item.direction }} policy={{ item.policy }}
     with_items:
