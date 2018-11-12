@@ -1,0 +1,9 @@
+---
+  - hosts: default
+    become: true  # become superuser. Can be placed in task
+    roles:
+      - apt
+      - docker
+      - nginx
+      - ufw
+      - image
