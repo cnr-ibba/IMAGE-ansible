@@ -15,3 +15,8 @@
 - name: Remove useless packages from the cache
   apt:
     autoclean: yes
+
+- name: remove old kernels
+  apt:
+    autoremove: yes
+    purge: yes

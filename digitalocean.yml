@@ -8,3 +8,4 @@
     - nginx
     - ufw
     - image
+    - image_user

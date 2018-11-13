@@ -1,0 +1,31 @@
+---
+- name: Create new user
+  user:
+    name: image
+    shell: /bin/bash
+    groups: docker
+    append: yes
+
+- name: Create .ssh folder
+  file:
+    path: ~image/.ssh
+    state: directory
+    owner: image
+    group: image
+    mode: 0700
+
+- name: Upload SSH key
+  copy:
+    src: authorized_keys
+    dest: ~image/.ssh/authorized_keys
+    owner: image
+    group: image
+    mode: 0700
+
+- name: install InjectTool from git
+  become: True
+  become_user: image
+  git:
+    repo: https://github.com/cnr-ibba/IMAGE-InjectTool.git
+    dest: ~image/IMAGE-InjectTool
+    version: master
