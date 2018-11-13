@@ -1,7 +1,4 @@
-
-- name: Copy maintenance page
-  copy: src=maintenance.html dest=/usr/share/nginx/html owner=root group=root
-
+---
 - name: Disable default configuration by removing link
   when: nginxinstalled is success
   file:
@@ -11,3 +8,20 @@
 - name: Copy nginx configuration for image stuff
   template: src=image.conf dest=/etc/nginx/conf.d/image.conf
   notify: Reload Nginx
+
+- name: Copy maintenance page
+  copy: src=maintenance.html dest=/usr/share/nginx/html owner=root group=root
+  notify: Reload Nginx
+
+- name: Copy favicon.ico
+  copy: src=favicon.ico dest=/usr/share/nginx/html owner=root group=root
+
+- name: Copy robots.txt
+  copy: src=robots.txt dest=/usr/share/nginx/html owner=root group=root
+
+# https://stackoverflow.com/a/48560511/4385116
+- name: Set image maintenance page
+  file:
+    src: /usr/share/nginx/html/maintenance.html
+    dest: /usr/share/nginx/html/image_maintenance.html
+    state: link

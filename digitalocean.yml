@@ -2,6 +2,8 @@
 - hosts: digitalocean
   remote_user: root
   roles:
+    # install with: ansible-galaxy install andrewsomething.do-agent
+    - andrewsomething.do-agent
     - apt
     - nginx
     - ufw
