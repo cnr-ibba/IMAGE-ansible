@@ -1,6 +1,6 @@
 
 [digitalocean]
-68.183.223.3  ansible_user=root ansible_python_interpreter=/usr/bin/python3
+104.248.31.95  ansible_user=root ansible_python_interpreter=/usr/bin/python3
 
 [control]
 master ansible_connection=local

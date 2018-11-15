@@ -1,0 +1,6 @@
+
+# exclude vault password
+.vault_pass.txt
+
+# exclude temporray files
+*~
