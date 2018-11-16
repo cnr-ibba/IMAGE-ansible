@@ -1,22 +1,13 @@
 ---
-- name: Update repositories cache and install "aptitude" package
+- name: Install "aptitude" package
   apt:
     name: aptitude
     update_cache: yes
     force_apt_get: yes
     cache_valid_time: 3600
 
-- name: Upgrade all packages to the latest version
+- name: install mailutils
   apt:
-    name: "*"
-    state: latest
+    name: mailutils
+    update_cache: yes
     cache_valid_time: 3600
-
-- name: Remove useless packages from the cache
-  apt:
-    autoclean: yes
-
-- name: remove old kernels
-  apt:
-    autoremove: yes
-    purge: yes

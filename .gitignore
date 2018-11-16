@@ -2,6 +2,9 @@
 # exclude vault password
 .vault_pass.txt
 
+# exclude failed mahines
+*.retry
+
 # exclude temporray files
 *~
 .vagrant/

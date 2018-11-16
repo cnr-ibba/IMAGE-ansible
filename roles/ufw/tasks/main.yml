@@ -21,7 +21,8 @@
 # Sometimes it is desirable to let the sender know when traffic is
 # being denied, rather than simply ignoring it. In these cases, use
 # reject instead of deny. In addition, log rejected connections:
-- ufw:
+- name: Logging rejected connections
+  ufw:
     rule: reject
     port: auth
     log: yes
@@ -31,7 +32,8 @@
 # address has attempted to initiate 6 or more connections in the last
 # 30 seconds. See  http://www.debian-administration.org/articles/187
 # for details. Typical usage is:
-- ufw:
+- name: limiting ssh connection
+  ufw:
     rule: limit
     port: ssh
     proto: tcp
@@ -39,33 +41,30 @@
 # Allow OpenSSH. (Note that as ufw manages its own state, simply removing
 # a rule=allow task can leave those ports exposed. Either use delete=yes
 # or a separate state=reset task)
-- ufw:
+- name: Allow OpenSSH
+  ufw:
     rule: allow
     name: OpenSSH
     delete: yes
 
 # deny docker ports from outside
-- name: delete docker port 2375
+- name: disable docker ports from outside
+  ufw: rule=allow port={{ item }} proto=tcp delete=yes
+  with_items:
+    - 2375
+    - 2376
+
+# enable Nginx ports
+- name: Enable NgINX ports
+  ufw: rule=allow name={{ item }}
+  with_items:
+    - Nginx HTTP
+    - Nginx HTTPS
+
+# allow sending mail
+- name: Enable sending email
   ufw:
     rule: allow
-    port: 2375
+    port: 587
     proto: tcp
     delete: yes
-
-- name: delete docker port 2376
-  ufw:
-    rule: allow
-    port: 2376
-    proto: tcp
-    delete: yes
-
-# enable Nginx
-- name: Enable NgINX (HTTP)
-  ufw:
-    rule: allow
-    name: Nginx HTTP
-
-- name: Enable NgINX (HTTPS)
-  ufw:
-    rule: allow
-    name: Nginx HTTPS

@@ -1,0 +1,5 @@
+---
+- hosts: digitalocean
+  tasks:
+  - name: Restart Server
+    reboot:
