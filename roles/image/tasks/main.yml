@@ -6,7 +6,14 @@
     state: absent
 
 - name: Copy nginx configuration for image stuff
-  template: src=image.conf dest=/etc/nginx/conf.d/image.conf
+  template: src=image.conf dest=/etc/nginx/sites-available/image.conf
+  notify: Reload Nginx
+
+- name: Enable image stuff
+  file:
+    src: /etc/nginx/sites-available/image.conf
+    dest: /etc/nginx/sites-enabled/image.conf
+    state: link
   notify: Reload Nginx
 
 - name: Copy maintenance page

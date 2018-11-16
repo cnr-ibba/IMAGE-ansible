@@ -3,6 +3,7 @@
   become: true  # become superuser. Can be placed in task
   roles:
     - apt
+    - time
     - docker
     - nginx
     - ufw
