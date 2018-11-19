@@ -10,7 +10,7 @@
     - nginx
     - ufw
     - image
-    - ANXS.logwatch
+    - logwatch
     - denyhosts
     - user
 

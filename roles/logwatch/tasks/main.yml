@@ -1,0 +1,42 @@
+# file: logwatch/tasks/main.yml
+
+- name: Install logwatch and dependancies
+  apt:
+    name: ['logwatch']
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Configure logwatch (/etc/logwatch/conf/logwatch.conf)
+  template:
+    src: logwatch.conf.j2
+    dest: /etc/logwatch/conf/logwatch.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: copy service configuration script for nginx
+  copy:
+    remote_src: yes
+    src: /usr/share/logwatch/scripts/services/http
+    dest: /etc/logwatch/scripts/services/nginx
+
+- name: copy configuration for nginx
+  copy:
+    remote_src: yes
+    src: /usr/share/logwatch/default.conf/logfiles/http.conf
+    dest: /etc/logwatch/conf/logfiles/nginx.conf
+
+- name: copy service configuration for nginx
+  copy:
+    remote_src: yes
+    src: /usr/share/logwatch/default.conf/services/http.conf
+    dest: /etc/logwatch/conf/services/nginx.conf
+
+- name: overriding conf files
+  # this module preserve the remote file, but allow us a modification
+  lineinfile: dest=/etc/logwatch/conf/services/nginx.conf regexp=^{{ item.key }}
+              line="{{ item.key }} = {{ item.value }}"
+  loop:
+    - { key: 'Title', value: "nginx"}
+    - { key: 'LogFile', value: "nginx"}

@@ -1,6 +1,7 @@
 ---
 - hosts: default
   become: true  # become superuser. Can be placed in task
+
   roles:
     - apt
     - time
@@ -8,4 +9,9 @@
     - nginx
     - ufw
     - image
+    - logwatch
+    - denyhosts
     - user
+
+vars_files:
+  - vars/main.yml
