@@ -1,8 +1,2 @@
 ---
 # vars file for denyhosts
-denyhosts_purge_deny: '2w'
-denyhosts_deny_threshold_root: 2
-denyhosts_deny_threshold_invalid: 2
-denyhosts_deny_threshold_valid: 4
-denyhosts_admin_email: 'root@localhost'
-denyhosts_reset_on_success: "yes"
