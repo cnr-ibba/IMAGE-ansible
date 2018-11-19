@@ -1,0 +1,4 @@
+---
+# handlers file for denyhosts
+- name: restart denyhosts
+  service: name=denyhosts state=restarted

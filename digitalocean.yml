@@ -6,10 +6,12 @@
     # install with: ansible-galaxy install andrewsomething.do-agent
     - andrewsomething.do-agent
     - apt
+    - time
     - nginx
     - ufw
     - image
     - ANXS.logwatch
+    - denyhosts
     - user
 
   vars_files:

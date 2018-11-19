@@ -1,0 +1,24 @@
+---
+# tasks file for denyhosts
+- name: install denyhosts
+  apt:
+    name: denyhosts
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: setting purge deny
+  # this module preserve the remote file, but allow us a modification
+  lineinfile: dest=/etc/denyhosts.conf regexp=^{{ item.key }}
+              line="{{ item.key }} = {{ item.value }}"
+  notify: restart denyhosts
+  loop:
+    - { key: 'PURGE_DENY', value: "{{ denyhosts_purge_deny }}"}
+    - { key: 'DENY_THRESHOLD_ROOT', value: "{{ denyhosts_deny_threshold_root }}"}
+    - { key: 'ADMIN_EMAIL', value: "{{ denyhosts_admin_email }}"}
+    - { key: 'RESET_ON_SUCCESS', value: "{{ denyhosts_reset_on_success }}"}
+    - { key: 'DENY_THRESHOLD_INVALID', value: "{{ denyhosts_deny_threshold_invalid }}"}
+    - { key: 'DENY_THRESHOLD_VALID', value: "{{ denyhosts_deny_threshold_valid }}"}
+
+# state=restarted restart regardles of current state
+- name: ensure denyhosts started
+  service: name=denyhosts state=started enabled=yes
