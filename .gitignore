@@ -1,6 +1,6 @@
 
 # exclude vault password
-.vault_pass.txt
+.*vault_pass.txt
 
 # exclude failed mahines
 *.retry

@@ -11,8 +11,4 @@
     - ufw
     - image
     - logwatch
-    - denyhosts
     - user
-
-  vars_files:
-    - vars/main.yml
