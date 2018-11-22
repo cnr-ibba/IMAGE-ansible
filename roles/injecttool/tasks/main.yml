@@ -1,0 +1,16 @@
+---
+# tasks file for injecttool
+- name: install InjectTool from git
+  become: True
+  become_user: image
+  git:
+    repo: https://github.com/cnr-ibba/IMAGE-InjectTool.git
+    dest: ~image/IMAGE-InjectTool
+    version: master
+
+- name: Copy first .env configuration
+  become: True
+  become_user: image
+  template:
+    src: env.j2
+    dest: ~image/IMAGE-InjectTool/.env

@@ -22,11 +22,3 @@
     owner: image
     group: image
     mode: 0700
-
-- name: install InjectTool from git
-  become: True
-  become_user: image
-  git:
-    repo: https://github.com/cnr-ibba/IMAGE-InjectTool.git
-    dest: ~image/IMAGE-InjectTool
-    version: master

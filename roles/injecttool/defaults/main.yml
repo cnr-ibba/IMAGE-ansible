@@ -1,0 +1,7 @@
+---
+# defaults file for injecttool
+injecttool_debug: False
+injecttool_celety_mail_backend: 'django.core.mail.backends.smtp.EmailBackend'
+InjectTool_emal_host: 'smtp.gmail.com'
+injecttool_email_use_tls: True
+injecttool_email_port: 587

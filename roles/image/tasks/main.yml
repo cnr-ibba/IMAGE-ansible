@@ -6,7 +6,7 @@
     state: absent
 
 - name: Copy nginx configuration for image stuff
-  template: src=image.conf dest=/etc/nginx/sites-available/image.conf
+  template: src=image.conf.j2 dest=/etc/nginx/sites-available/image.conf
   notify: Reload Nginx
 
 - name: Enable image stuff
