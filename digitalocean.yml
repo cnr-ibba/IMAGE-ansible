@@ -9,6 +9,8 @@
     - role: fail2ban
       tags: fail2ban
     - time
+    - role: docker
+      tags: docker
     - nginx
     - ufw
     - image

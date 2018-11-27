@@ -13,3 +13,12 @@
     state: present
     update_cache: yes
     cache_valid_time: 3600
+
+- name: Add docker configuration file
+  copy:
+    src: daemon.json
+    dest: /etc/docker//daemon.json
+  notify: restart docker
+
+- name: ensure docker started
+  service: name=docker state=started enabled=yes

@@ -4,10 +4,14 @@
 
   roles:
     - apt
+    - role: fail2ban
+      tags: fail2ban
     - time
-    - docker
+    - role: docker
+      tags: docker
     - nginx
     - ufw
     - image
     - logwatch
     - user
+    - injecttool
