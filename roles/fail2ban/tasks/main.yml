@@ -7,18 +7,49 @@
     update_cache: yes
     cache_valid_time: 3600
 
-# copy configuration file
-- name: copy configuration file
-  copy:
-    src: /etc/fail2ban/jail.conf
-    dest: /etc/fail2ban/jail.local
-    remote_src: yes
+- name: remove already present conf file
+  file:
+    path: /etc/fail2ban/jail.local
+    state: absent
 
-# set ip to ignore
-- name: set ip to ignore
-  # this module preserve the remote file, but allow us a modification
-  lineinfile: dest=/etc/fail2ban/jail.local regexp=^#?ignoreip
-              line="ignoreip = {{ fail2ban_ignoreip }}"
+- name: Configure fail2ban (/etc/fail2ban/jail.local)
+  template:
+    src: jail.local.j2
+    dest: /etc/fail2ban/jail.local
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart fail2ban
+
+- name: copy nginx-http-auth.conf
+  copy:
+    src: nginx-http-auth.conf
+    dest: /etc/fail2ban/filter.d/nginx-http-auth.conf
+  notify: restart fail2ban
+
+- name: copy nginx-badbots.conf
+  copy:
+    src: /etc/fail2ban/filter.d/apache-badbots.conf
+    dest: /etc/fail2ban/filter.d/nginx-badbots.conf
+    remote_src: yes
+  notify: restart fail2ban
+
+- name: copy nginx-noscript.conf
+  copy:
+    src: nginx-noscript.conf
+    dest: /etc/fail2ban/filter.d/nginx-noscript.conf
+  notify: restart fail2ban
+
+- name: copy nginx-nohome.conf
+  copy:
+    src: nginx-nohome.conf
+    dest: /etc/fail2ban/filter.d/nginx-nohome.conf
+  notify: restart fail2ban
+
+- name: copy nginx-noproxy.conf
+  copy:
+    src: nginx-noproxy.conf
+    dest: /etc/fail2ban/filter.d/nginx-noproxy.conf
   notify: restart fail2ban
 
 - name: ensure fail2ban started

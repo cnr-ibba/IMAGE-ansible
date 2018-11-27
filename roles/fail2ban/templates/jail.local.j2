@@ -1,0 +1,64 @@
+[DEFAULT]
+
+# email address to receive notifications.
+destemail = {{ fail2ban_destemail }}
+# the email address from which to send emails.
+sender = root@<fq-hostname>
+# name on the notification emails.
+sendername = Fail2Ban
+# email transfer agent to use.
+mta = mail
+
+# ignore those ip addresses
+ignoreip = {{ fail2ban_ignoreip }}
+
+# see action.d/ufw.conf
+actionban = ufw.conf
+# see action.d/ufw.conf
+actionunban = ufw.conf
+
+[sshd]
+enabled = true
+port = ssh
+filter = sshd
+# the length of time between login attempts for maxretry.
+findtime = 600
+# attempts from a single ip before a ban is imposed.
+maxretry = 5
+# the number of seconds that a host is banned for.
+bantime = 3600
+
+# inspired from https://www.digitalocean.com/community/tutorials/how-to-protect-an-nginx-server-with-fail2ban-on-ubuntu-14-04
+[nginx-http-auth]
+enabled  = true
+filter   = nginx-http-auth
+port     = http,https
+logpath  = /var/log/nginx/error.log
+
+[nginx-noscript]
+enabled  = true
+port     = http,https
+filter   = nginx-noscript
+logpath  = /var/log/nginx/access.log
+maxretry = 6
+
+[nginx-badbots]
+enabled  = true
+port     = http,https
+filter   = nginx-badbots
+logpath  = /var/log/nginx/access.log
+maxretry = 2
+
+[nginx-nohome]
+enabled  = true
+port     = http,https
+filter   = nginx-nohome
+logpath  = /var/log/nginx/access.log
+maxretry = 2
+
+[nginx-noproxy]
+enabled  = true
+port     = http,https
+filter   = nginx-noproxy
+logpath  = /var/log/nginx/access.log
+maxretry = 2
