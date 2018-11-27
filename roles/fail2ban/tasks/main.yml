@@ -7,11 +7,6 @@
     update_cache: yes
     cache_valid_time: 3600
 
-- name: remove already present conf file
-  file:
-    path: /etc/fail2ban/jail.local
-    state: absent
-
 - name: Configure fail2ban (/etc/fail2ban/jail.local)
   template:
     src: jail.local.j2
@@ -50,6 +45,15 @@
   copy:
     src: nginx-noproxy.conf
     dest: /etc/fail2ban/filter.d/nginx-noproxy.conf
+  notify: restart fail2ban
+
+# protect against http DDOS attack
+# more info: https://r3dux.org/2013/06/how-to-stop-apache-dos-attacks-with-fail2ban/
+# and https://www.garron.me/en/go2linux/fail2ban-protect-web-server-http-dos-attack.html
+- name: copy http-get-dos.conf
+  copy:
+    src: http-get-dos.conf
+    dest: /etc/fail2ban/filter.d/http-get-dos.conf
   notify: restart fail2ban
 
 - name: ensure fail2ban started

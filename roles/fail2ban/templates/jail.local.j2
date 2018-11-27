@@ -33,32 +33,49 @@ bantime = 3600
 enabled  = true
 filter   = nginx-http-auth
 port     = http,https
-logpath  = /var/log/nginx/error.log
+logpath  = %(nginx_error_log)s
 
 [nginx-noscript]
 enabled  = true
 port     = http,https
 filter   = nginx-noscript
-logpath  = /var/log/nginx/access.log
+logpath  = %(nginx_access_log)s
 maxretry = 6
 
 [nginx-badbots]
 enabled  = true
 port     = http,https
 filter   = nginx-badbots
-logpath  = /var/log/nginx/access.log
+logpath  = %(nginx_access_log)s
 maxretry = 2
 
 [nginx-nohome]
 enabled  = true
 port     = http,https
 filter   = nginx-nohome
-logpath  = /var/log/nginx/access.log
+logpath  = %(nginx_access_log)s
 maxretry = 2
 
 [nginx-noproxy]
 enabled  = true
 port     = http,https
 filter   = nginx-noproxy
-logpath  = /var/log/nginx/access.log
+logpath  = %(nginx_access_log)s
 maxretry = 2
+
+# Protect against HTTP DDOS attack
+[http-get-dos]
+enabled = true
+port = http,https
+filter = http-get-dos
+logpath = %(nginx_access_log)s
+
+# maxretry is how many GETs we can have in the findtime period before getting narky
+maxretry = 300
+# findtime is the time period in seconds in which we're counting "retries"
+findtime = 300
+# bantime is how long we should drop incoming GET requests for a given IP
+bantime = 300
+# action to do
+# ban & send an e-mail with whois report and relevant log lines
+action = %(action_mwl)s
