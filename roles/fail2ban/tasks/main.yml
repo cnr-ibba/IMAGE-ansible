@@ -2,10 +2,24 @@
 # tasks file for fail2ban
 - name: Install required packages
   apt:
-    name: [ 'fail2ban', 'whois' ]
+    name: [ 'fail2ban', 'whois', 'sqlite3', 'rlwrap' ]
     state: present
     update_cache: yes
     cache_valid_time: 3600
+
+# configure fail2ban.conf
+- name: set dbpurgeage time
+  # this module preserve the remote file, but allow us a modification
+  lineinfile: dest=/etc/fail2ban/fail2ban.conf regexp=^dbpurgeage
+              line="dbpurgeage = {{ fail2ban_dbpurgeage }}"
+  notify: restart fail2ban
+
+# force log info for recidive attempts
+- name: set logging level
+  # this module preserve the remote file, but allow us a modification
+  lineinfile: dest=/etc/fail2ban/fail2ban.conf regexp=^loglevel
+              line="loglevel = INFO"
+  notify: restart fail2ban
 
 - name: Configure fail2ban (/etc/fail2ban/jail.local)
   template:
@@ -14,47 +28,47 @@
     owner: root
     group: root
     mode: 0644
-  notify: restart fail2ban
+  notify: reload fail2ban
 
 - name: copy nginx-http-auth.conf
   copy:
     src: nginx-http-auth.conf
     dest: /etc/fail2ban/filter.d/nginx-http-auth.conf
-  notify: restart fail2ban
+  notify: reload fail2ban
 
 - name: copy nginx-badbots.conf
   copy:
     src: /etc/fail2ban/filter.d/apache-badbots.conf
     dest: /etc/fail2ban/filter.d/nginx-badbots.conf
     remote_src: yes
-  notify: restart fail2ban
+  notify: reload fail2ban
 
 - name: copy nginx-noscript.conf
   copy:
     src: nginx-noscript.conf
     dest: /etc/fail2ban/filter.d/nginx-noscript.conf
-  notify: restart fail2ban
+  notify: reload fail2ban
 
 - name: copy nginx-nohome.conf
   copy:
     src: nginx-nohome.conf
     dest: /etc/fail2ban/filter.d/nginx-nohome.conf
-  notify: restart fail2ban
+  notify: reload fail2ban
 
 - name: copy nginx-noproxy.conf
   copy:
     src: nginx-noproxy.conf
     dest: /etc/fail2ban/filter.d/nginx-noproxy.conf
-  notify: restart fail2ban
+  notify: reload fail2ban
 
 # protect against http DDOS attack
 # more info: https://r3dux.org/2013/06/how-to-stop-apache-dos-attacks-with-fail2ban/
 # and https://www.garron.me/en/go2linux/fail2ban-protect-web-server-http-dos-attack.html
-- name: copy http-get-dos.conf
+- name: copy nginx-ddos.conf
   copy:
-    src: http-get-dos.conf
-    dest: /etc/fail2ban/filter.d/http-get-dos.conf
-  notify: restart fail2ban
+    src: nginx-ddos.conf
+    dest: /etc/fail2ban/filter.d/nginx-ddos.conf
+  notify: reload fail2ban
 
 - name: ensure fail2ban started
   service: name=fail2ban state=started enabled=yes

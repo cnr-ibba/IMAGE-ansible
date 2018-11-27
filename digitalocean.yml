@@ -7,7 +7,6 @@
     - andrewsomething.do-agent
     - apt
     - role: fail2ban
-      fail2ban_ignoreip: 127.0.0.1/8 ::1 155.253.6.254 155.253.15.135
       tags: fail2ban
     - time
     - nginx

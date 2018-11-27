@@ -22,11 +22,13 @@ enabled = true
 port = ssh
 filter = sshd
 # the length of time between login attempts for maxretry.
-findtime = 600
+findtime = 12h
 # attempts from a single ip before a ban is imposed.
-maxretry = 5
+maxretry = 3
 # the number of seconds that a host is banned for.
-bantime = 3600
+bantime = 1d
+# ban & send an e-mail with whois report
+action = %(action_mw)s
 
 # inspired from https://www.digitalocean.com/community/tutorials/how-to-protect-an-nginx-server-with-fail2ban-on-ubuntu-14-04
 [nginx-http-auth]
@@ -64,18 +66,38 @@ logpath  = %(nginx_access_log)s
 maxretry = 2
 
 # Protect against HTTP DDOS attack
-[http-get-dos]
-enabled = true
+[nginx-ddos]
+enabled = false
 port = http,https
-filter = http-get-dos
+filter = nginx-ddos
 logpath = %(nginx_access_log)s
 
 # maxretry is how many GETs we can have in the findtime period before getting narky
 maxretry = 300
 # findtime is the time period in seconds in which we're counting "retries"
-findtime = 300
+findtime = 150
 # bantime is how long we should drop incoming GET requests for a given IP
 bantime = 300
 # action to do
 # ban & send an e-mail with whois report and relevant log lines
 action = %(action_mwl)s
+
+# https://wiki.meurisse.org/wiki/Fail2Ban#Recidive
+# Jail for more extended banning of persistent abusers
+# !!! WARNINGS !!!
+# 1. Make sure that your loglevel specified in fail2ban.conf/.local
+#    is not at DEBUG level -- which might then cause fail2ban to fall into
+#    an infinite loop constantly feeding itself with non-informative lines
+# 2. If you increase bantime, you must increase value of dbpurgeage
+#    to maintain entries for failed logins for sufficient amount of time.
+#    The default is defined in fail2ban.conf and you can override it in fail2ban.local
+[recidive]
+enabled  = true
+logpath  = /var/log/fail2ban.log
+banaction = %(banaction_allports)s
+bantime  = 1w
+findtime = 1d
+maxretry  = 3
+protocol  = 0-255
+# ban & send an e-mail with whois report
+action = %(action_mw)s
