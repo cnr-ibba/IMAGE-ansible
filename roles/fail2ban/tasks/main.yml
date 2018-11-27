@@ -1,0 +1,25 @@
+---
+# tasks file for fail2ban
+- name: Install required packages
+  apt:
+    name: [ 'fail2ban', 'whois' ]
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+
+# copy configuration file
+- name: copy configuration file
+  copy:
+    src: /etc/fail2ban/jail.conf
+    dest: /etc/fail2ban/jail.local
+    remote_src: yes
+
+# set ip to ignore
+- name: set ip to ignore
+  # this module preserve the remote file, but allow us a modification
+  lineinfile: dest=/etc/fail2ban/jail.local regexp=^#?ignoreip
+              line="ignoreip = {{ fail2ban_ignoreip }}"
+  notify: restart fail2ban
+
+- name: ensure fail2ban started
+  service: name=fail2ban state=started enabled=yes

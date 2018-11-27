@@ -5,6 +5,6 @@
 # exclude failed mahines
 *.retry
 
-# exclude temporray files
+# exclude temporary files
 *~
 .vagrant/
