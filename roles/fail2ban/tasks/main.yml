@@ -2,7 +2,7 @@
 # tasks file for fail2ban
 - name: Install required packages
   apt:
-    name: [ 'fail2ban', 'whois', 'sqlite3', 'rlwrap' ]
+    name: [ 'fail2ban', 'whois', 'sqlite3', 'rlwrap', 'python3-dnspython' ]
     state: present
     update_cache: yes
     cache_valid_time: 3600
