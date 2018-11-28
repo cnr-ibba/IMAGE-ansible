@@ -19,6 +19,7 @@
     - { key: 'DENY_THRESHOLD_VALID', value: "{{ denyhosts_deny_threshold_valid }}"}
     - { key: 'SYNC_UPLOAD', value: "{{ denyhosts_sync_upload }}"}
     - { key: 'SYNC_DOWNLOAD', value: "{{ denyhosts_sync_download }}"}
+    - { key: 'SUSPICIOUS_LOGIN_REPORT_ALLOWED_HOSTS', value: "{{ denyhosts_suspicious }}"}
 
 - name: uncomment options in purge deny
   lineinfile: dest=/etc/denyhosts.conf regexp="^#?{{ item.key }}"
@@ -32,6 +33,17 @@
   lineinfile: dest=/etc/denyhosts.conf regexp="^#?IPTABLES"
               line="#IPTABLES = /sbin/iptables"
   notify: restart denyhosts
+
+- name: copy purge_denyhosts.sh script
+  copy:
+    src: purge_denyhosts.sh
+    dest: /usr/local/bin/purge_denyhosts.sh
+    mode: 0755
+
+- name: copy denyhost allowed hosts
+  copy:
+    src: allowed-hosts
+    dest: /var/lib/denyhosts/allowed-hosts
 
 # state=restarted restart regardles of current state
 - name: ensure denyhosts started

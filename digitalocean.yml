@@ -8,6 +8,7 @@
     - apt
     - role: fail2ban
       tags: fail2ban
+      fail2ban_ignoreip: 127.0.0.1/8 ::1 155.253.15.135
     - role: denyhosts
       tags: denyhosts
     - time
