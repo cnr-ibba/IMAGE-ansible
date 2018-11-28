@@ -8,6 +8,8 @@
     - apt
     - role: fail2ban
       tags: fail2ban
+    - role: denyhosts
+      tags: denyhosts
     - time
     - role: docker
       tags: docker

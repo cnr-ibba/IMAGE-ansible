@@ -15,9 +15,23 @@
     - { key: 'PURGE_DENY', value: "{{ denyhosts_purge_deny }}"}
     - { key: 'DENY_THRESHOLD_ROOT', value: "{{ denyhosts_deny_threshold_root }}"}
     - { key: 'ADMIN_EMAIL', value: "{{ denyhosts_admin_email }}"}
-    - { key: 'RESET_ON_SUCCESS', value: "{{ denyhosts_reset_on_success }}"}
     - { key: 'DENY_THRESHOLD_INVALID', value: "{{ denyhosts_deny_threshold_invalid }}"}
     - { key: 'DENY_THRESHOLD_VALID', value: "{{ denyhosts_deny_threshold_valid }}"}
+    - { key: 'SYNC_UPLOAD', value: "{{ denyhosts_sync_upload }}"}
+    - { key: 'SYNC_DOWNLOAD', value: "{{ denyhosts_sync_download }}"}
+
+- name: uncomment options in purge deny
+  lineinfile: dest=/etc/denyhosts.conf regexp="^#?{{ item.key }}"
+              line="{{ item.key }} = {{ item.value }}"
+  notify: restart denyhosts
+  loop:
+    - { key: 'RESET_ON_SUCCESS', value: "{{ denyhosts_reset_on_success }}"}
+    - { key: 'SYNC_SERVER', value: "{{ denyhosts_sync_server }}"}
+
+- name: disable iptable with denyhosts
+  lineinfile: dest=/etc/denyhosts.conf regexp="^#?IPTABLES"
+              line="#IPTABLES = /sbin/iptables"
+  notify: restart denyhosts
 
 # state=restarted restart regardles of current state
 - name: ensure denyhosts started
