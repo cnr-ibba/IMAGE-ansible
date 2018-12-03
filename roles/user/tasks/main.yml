@@ -21,4 +21,4 @@
     dest: ~image/.ssh/authorized_keys
     owner: image
     group: image
-    mode: 0700
+    mode: 0600
