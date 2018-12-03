@@ -30,36 +30,42 @@
     mode: 0644
   notify: reload fail2ban
 
+- name: copy sshd.conf
+  copy:
+    src: sshd.conf
+    dest: /etc/fail2ban/filter.d/sshd.conf
+  notify: restart fail2ban
+
 - name: copy nginx-http-auth.conf
   copy:
     src: nginx-http-auth.conf
     dest: /etc/fail2ban/filter.d/nginx-http-auth.conf
-  notify: reload fail2ban
+  notify: restart fail2ban
 
 - name: copy nginx-badbots.conf
   copy:
     src: /etc/fail2ban/filter.d/apache-badbots.conf
     dest: /etc/fail2ban/filter.d/nginx-badbots.conf
     remote_src: yes
-  notify: reload fail2ban
+  notify: restart fail2ban
 
 - name: copy nginx-noscript.conf
   copy:
     src: nginx-noscript.conf
     dest: /etc/fail2ban/filter.d/nginx-noscript.conf
-  notify: reload fail2ban
+  notify: restart fail2ban
 
 - name: copy nginx-nohome.conf
   copy:
     src: nginx-nohome.conf
     dest: /etc/fail2ban/filter.d/nginx-nohome.conf
-  notify: reload fail2ban
+  notify: restart fail2ban
 
 - name: copy nginx-noproxy.conf
   copy:
     src: nginx-noproxy.conf
     dest: /etc/fail2ban/filter.d/nginx-noproxy.conf
-  notify: reload fail2ban
+  notify: restart fail2ban
 
 # protect against http DDOS attack
 # more info: https://r3dux.org/2013/06/how-to-stop-apache-dos-attacks-with-fail2ban/
@@ -68,7 +74,7 @@
   copy:
     src: nginx-ddos.conf
     dest: /etc/fail2ban/filter.d/nginx-ddos.conf
-  notify: reload fail2ban
+  notify: restart fail2ban
 
 - name: ensure fail2ban started
   service: name=fail2ban state=started enabled=yes

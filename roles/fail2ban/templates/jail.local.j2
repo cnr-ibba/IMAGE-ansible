@@ -22,18 +22,17 @@ enabled = true
 # To use more aggressive sshd modes set filter parameter "mode" in jail.local:
 # normal (default), ddos, extra or aggressive (combines all).
 # See "tests/files/logs/sshd" or "filter.d/sshd.conf" for usage example and details.
-mode    = ddos
+filter  = sshd[mode=aggressive]
 port    = ssh
 logpath = %(sshd_log)s
 backend = %(sshd_backend)s
 
-filter = sshd
 # the length of time between login attempts for maxretry.
 findtime = 12h
 # attempts from a single ip before a ban is imposed.
 maxretry = 3
 # the number of seconds that a host is banned for.
-bantime = 1d
+bantime = 6h
 # ban & send an e-mail with whois report
 # action = %(action_mw)s
 
@@ -116,4 +115,4 @@ findtime = 1d
 maxretry  = 3
 protocol  = 0-255
 # ban & send an e-mail with whois report
-action = %(action_mw)s
+# action = %(action_mw)s
