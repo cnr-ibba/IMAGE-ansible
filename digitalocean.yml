@@ -16,7 +16,8 @@
       tags: docker
     - nginx
     - ufw
-    - image
+    - role: image
+      tags: image
     - logwatch
     - role: user
       tags: user

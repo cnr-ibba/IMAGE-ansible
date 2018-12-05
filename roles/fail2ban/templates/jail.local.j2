@@ -112,6 +112,5 @@ logpath  = /var/log/fail2ban.log
 bantime  = 1w
 findtime = 1d
 maxretry  = 3
-protocol  = 0-255
-# ban & send an e-mail with whois report
-# action = %(action_mw)s
+banaction = iptables-multiport
+action = %(action_)s
