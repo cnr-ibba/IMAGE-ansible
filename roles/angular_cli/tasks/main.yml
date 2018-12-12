@@ -1,0 +1,11 @@
+---
+# tasks file for angular_cli
+- name: Install required packages
+  apt:
+    name: [ 'npm' ]
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install angular_cli
+  command: "npm install -g @angular/cli"
