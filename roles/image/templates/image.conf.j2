@@ -94,12 +94,6 @@ server {
   }
 
   location /data_portal/ {
-    # check if site is under mantainance
-    # Se trovo questo file, ritorno un errore 503 a prescindere
-    if (-f /usr/share/nginx/html/image_maintenance.html) {
-            return 503;
-    }
-
     # set variable in location
     set $my_port 26081;
 
