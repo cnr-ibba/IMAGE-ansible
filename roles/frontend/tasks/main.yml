@@ -1,0 +1,9 @@
+---
+# tasks file for frontend
+- name: install IMAGE-Portal from git
+  become: True
+  become_user: image
+  git:
+    repo: https://github.com/cnr-ibba/IMAGE-Portal.git
+    dest: ~image/IMAGE-Portal
+    version: master
