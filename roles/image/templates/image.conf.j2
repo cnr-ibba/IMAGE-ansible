@@ -38,6 +38,9 @@ server {
   #
   # include snippets/snakeoil.conf;
 
+  # this is the default root directory. /usr/share/nginx/html will contain
+  # accessory files, like image_maintenance or robots.txt that are not stored
+  # in the same site location
   root /var/www/html;
 
   # Add index.php to the list if you are using PHP
@@ -48,10 +51,9 @@ server {
   location / {
     # First attempt to serve request as file, then
     # as directory, then fall back to displaying a 404.
-    root   /usr/share/nginx/html;
     index  index.html index.htm;
-    try_files $uri $uri/ /index.html =404;
-}
+    try_files $uri $uri/ =404;
+  }
 
   # custom error page
   error_page 503 /maintenance.html;

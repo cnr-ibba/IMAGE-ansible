@@ -1,12 +1,13 @@
 ---
 - name: Disable default configuration by removing link
-  when: nginxinstalled is success
   file:
     path: /etc/nginx/sites-enabled/default
     state: absent
+  tags: ['image-configure']
 
 - name: Copy nginx configuration for image stuff
   template: src=image.conf.j2 dest=/etc/nginx/sites-available/image.conf
+  tags: ['image-configure']
   notify: Reload Nginx
 
 - name: Enable image stuff
@@ -14,6 +15,7 @@
     src: /etc/nginx/sites-available/image.conf
     dest: /etc/nginx/sites-enabled/image.conf
     state: link
+  tags: ['image-configure']
   notify: Reload Nginx
 
 - name: Copy maintenance page

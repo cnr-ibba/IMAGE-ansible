@@ -21,7 +21,8 @@
     - logwatch
     - role: user
       tags: user
-    - injecttool
+    - role: injecttool
+      tags: injecttool
     - common_data_pool
     - angular_cli
     - frontend
