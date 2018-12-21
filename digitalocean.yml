@@ -18,6 +18,8 @@
     - ufw
     - role: image
       tags: image
+    - role: letsencrypt
+      tags: ['letsencrypt', 'image']
     - logwatch
     - role: user
       tags: user

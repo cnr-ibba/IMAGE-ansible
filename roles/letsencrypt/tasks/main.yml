@@ -1,0 +1,14 @@
+---
+# tasks file for letsencrypt
+
+# Installing Certbot
+- apt_repository:
+    repo: ppa:certbot/certbot
+
+- name: installing certbot
+  apt: pkg=python-certbot-nginx state=present update_cache=true cache_valid_time=3600
+
+- name: Override NGINX conf with letsencrypt stuff
+  copy: src=image.conf dest=/etc/nginx/sites-available/image.conf
+  tags: ['image-configure']
+  notify: Reload Nginx
