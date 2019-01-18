@@ -1,0 +1,4 @@
+---
+# defaults file for swapon
+swapfile_size: 2G
+swapfile_swappiness: 10

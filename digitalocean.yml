@@ -8,6 +8,8 @@
       tags: do-agent
     - role: apt
       tags: packages
+    - role: swapfile
+      tags: swapfile
     - role: fail2ban
       tags: fail2ban
       fail2ban_ignoreip: 127.0.0.1/8 ::1 155.253.15.135

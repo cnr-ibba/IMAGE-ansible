@@ -6,9 +6,12 @@
     state: present
     update_cache: yes
     cache_valid_time: 3600
+  tags: packages
 
 - name: Install angular_cli
   command: "npm install -g @angular/cli"
+  tags: packages
 
 - name: Install build-angular
   command: "npm install -g @angular-devkit/build-angular"
+  tags: packages

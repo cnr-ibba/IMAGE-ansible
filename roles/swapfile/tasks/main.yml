@@ -1,0 +1,45 @@
+---
+# inspired from https://github.com/ansible/ansible/issues/5241#issuecomment-31438159
+# integrated with https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-18-04
+# tasks file for swapon
+- name: Create swap space
+  command: fallocate -l {{ swapfile_size }} /swapfile
+  when: ansible_swaptotal_mb < 1
+  tags: configure
+
+- name: Set swap permissions
+  file:
+    path: /swapfile
+    mode: 0600
+  tags: configure
+
+- name: Make swap
+  command: mkswap /swapfile
+  when: ansible_swaptotal_mb < 1
+  tags: configure
+
+- name: Add to fstab
+  action: lineinfile dest=/etc/fstab regexp="swapfile" line="/swapfile none swap sw 0 0" state=present
+  tags: configure
+
+- name: Turn swap on
+  command: swapon -a
+  when: ansible_swaptotal_mb < 1
+  tags: configure
+
+- name: Set Swappiness
+  command: sysctl vm.swappiness={{ swapfile_swappiness }}
+  tags: configure
+
+- name: Set swappiness in sysctl
+  blockinfile:
+    path: /etc/sysctl.conf
+    block: |
+      ###################################################################
+      # Swappiness
+      # The swappiness parameter configures how often your system swaps data out
+      # of RAM to the swap space. This is a value between 0 and 100 that represents a percentage.
+      # With values close to zero, the kernel will not swap data to the disk unless absolutely necessary.
+      vm.swappiness = {{ swapfile_swappiness }}
+    marker: "# {mark} ANSIBLE SWAPPINESS"
+  tags: configure
