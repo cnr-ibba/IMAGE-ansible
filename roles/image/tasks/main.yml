@@ -6,7 +6,9 @@
   tags: ['image-configure']
 
 - name: Copy nginx configuration for image stuff
-  copy: src=image.conf dest=/etc/nginx/sites-available/image.conf
+  template:
+    src: image.conf.j2
+    dest: /etc/nginx/sites-available/image.conf
   tags: ['image-configure']
   notify: Reload Nginx
 

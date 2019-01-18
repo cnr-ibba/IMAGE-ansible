@@ -26,5 +26,7 @@
     - role: injecttool
       tags: injecttool
     - common_data_pool
-    - angular_cli
-    - frontend
+    - role: angular_cli
+      tags: angular_cli
+    - role: frontend
+      tags: frontend

@@ -9,3 +9,6 @@
 
 - name: Install angular_cli
   command: "npm install -g @angular/cli"
+
+- name: Install build-angular
+  command: "npm install -g @angular-devkit/build-angular"
