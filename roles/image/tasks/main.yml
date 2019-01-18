@@ -5,6 +5,12 @@
     state: absent
   tags: ['image-configure']
 
+- name: Remove default home page
+  file:
+    path: /var/www/html/index.nginx-debian.html
+    state: absent
+  tags: ['image-data']
+
 - name: Copy nginx configuration for image stuff
   template:
     src: image.conf.j2
@@ -23,12 +29,15 @@
 - name: Copy maintenance page
   copy: src=maintenance.html dest=/usr/share/nginx/html owner=root group=root
   notify: Reload Nginx
+  tags: ['image-data']
 
 - name: Copy favicon.ico
   copy: src=favicon.ico dest=/usr/share/nginx/html owner=root group=root
+  tags: ['image-data']
 
 - name: Copy robots.txt
   copy: src=robots.txt dest=/usr/share/nginx/html owner=root group=root
+  tags: ['image-data']
 
 # https://stackoverflow.com/a/48560511/4385116
 - name: Set image maintenance page
@@ -36,3 +45,4 @@
     src: /usr/share/nginx/html/maintenance.html
     dest: /usr/share/nginx/html/image_maintenance.html
     state: link
+  tags: ['image-data']
