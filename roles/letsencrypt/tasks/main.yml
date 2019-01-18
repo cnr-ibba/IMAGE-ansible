@@ -4,16 +4,18 @@
 # Installing Certbot
 - apt_repository:
     repo: ppa:certbot/certbot
+  tags: packages
 
 - name: installing certbot
   apt: pkg=python-certbot-nginx state=present update_cache=true cache_valid_time=3600
+  tags: packages
 
 - name: listen for 433 ports on ipv4
   lineinfile:
     path: /etc/nginx/sites-available/image.conf
     regexp: 'listen 80 default_server;'
     line: '  listen 443 ssl;'
-  tags: ['image-configure']
+  tags: ['image-configure', 'configure']
   notify: Reload Nginx
 
 - name: listen for 433 ports on ipv6
@@ -21,7 +23,7 @@
     path: /etc/nginx/sites-available/image.conf
     regexp: 'listen \[\:\:\]\:80 default_server;'
     line: '  listen [::]:443 ssl ipv6only=on;'
-  tags: ['image-configure']
+  tags: ['image-configure', 'configure']
   notify: Reload Nginx
 
 - name: add SSL configuration
@@ -34,7 +36,7 @@
         ssl_certificate_key /etc/letsencrypt/live/{{ letsencrypt_domain }}/privkey.pem;
         include /etc/letsencrypt/options-ssl-nginx.conf;
         ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-  tags: ['image-configure']
+  tags: ['image-configure', 'configure']
   notify: Reload Nginx
 
 - name: redirect http traffic to https
@@ -59,5 +61,5 @@
         return 404;
       }
     marker: "# {mark} ANSIBLE REDIRECT"
-  tags: ['image-configure']
+  tags: ['image-configure', 'configure']
   notify: Reload Nginx

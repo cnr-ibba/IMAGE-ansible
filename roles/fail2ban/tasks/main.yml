@@ -6,6 +6,7 @@
     state: present
     update_cache: yes
     cache_valid_time: 3600
+  tags: packages
 
 # configure fail2ban.conf
 - name: set dbpurgeage time
@@ -13,6 +14,7 @@
   lineinfile: dest=/etc/fail2ban/fail2ban.conf regexp=^dbpurgeage
               line="dbpurgeage = {{ fail2ban_dbpurgeage }}"
   notify: restart fail2ban
+  tags: configure
 
 # force log info for recidive attempts
 - name: set logging level
@@ -20,6 +22,7 @@
   lineinfile: dest=/etc/fail2ban/fail2ban.conf regexp=^loglevel
               line="loglevel = INFO"
   notify: restart fail2ban
+  tags: configure
 
 - name: Configure fail2ban (/etc/fail2ban/jail.local)
   template:
@@ -29,18 +32,21 @@
     group: root
     mode: 0644
   notify: reload fail2ban
+  tags: configure
 
 - name: copy sshd.conf
   copy:
     src: sshd.conf
     dest: /etc/fail2ban/filter.d/sshd.conf
   notify: restart fail2ban
+  tags: configure
 
 - name: copy nginx-http-auth.conf
   copy:
     src: nginx-http-auth.conf
     dest: /etc/fail2ban/filter.d/nginx-http-auth.conf
   notify: restart fail2ban
+  tags: configure
 
 - name: copy nginx-badbots.conf
   copy:
@@ -48,24 +54,28 @@
     dest: /etc/fail2ban/filter.d/nginx-badbots.conf
     remote_src: yes
   notify: restart fail2ban
+  tags: configure
 
 - name: copy nginx-noscript.conf
   copy:
     src: nginx-noscript.conf
     dest: /etc/fail2ban/filter.d/nginx-noscript.conf
   notify: restart fail2ban
+  tags: configure
 
 - name: copy nginx-nohome.conf
   copy:
     src: nginx-nohome.conf
     dest: /etc/fail2ban/filter.d/nginx-nohome.conf
   notify: restart fail2ban
+  tags: configure
 
 - name: copy nginx-noproxy.conf
   copy:
     src: nginx-noproxy.conf
     dest: /etc/fail2ban/filter.d/nginx-noproxy.conf
   notify: restart fail2ban
+  tags: configure
 
 # protect against http DDOS attack
 # more info: https://r3dux.org/2013/06/how-to-stop-apache-dos-attacks-with-fail2ban/
@@ -75,6 +85,8 @@
     src: nginx-ddos.conf
     dest: /etc/fail2ban/filter.d/nginx-ddos.conf
   notify: restart fail2ban
+  tags: configure
 
 - name: ensure fail2ban started
   service: name=fail2ban state=started enabled=yes
+  tags: service

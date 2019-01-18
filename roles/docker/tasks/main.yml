@@ -2,10 +2,12 @@
 # https://gist.github.com/rbq/886587980894e98b23d0eee2a1d84933
 - name: Add Docker GPG key
   apt_key: url=https://download.docker.com/linux/ubuntu/gpg
+  tags: packages
 
 - name: Add Docker APT repository
   apt_repository:
     repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable
+  tags: packages
 
 - name: Install list of packages
   apt:
@@ -13,12 +15,15 @@
     state: present
     update_cache: yes
     cache_valid_time: 3600
+  tags: packages
 
 - name: Add docker configuration file
   copy:
     src: daemon.json
     dest: /etc/docker//daemon.json
   notify: restart docker
+  tags: configure
 
 - name: ensure docker started
   service: name=docker state=started enabled=yes
+  tags: service

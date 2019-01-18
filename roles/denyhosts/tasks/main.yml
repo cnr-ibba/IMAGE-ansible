@@ -5,6 +5,7 @@
     name: denyhosts
     update_cache: yes
     cache_valid_time: 3600
+  tags: packages
 
 - name: setting denyhosts.conf
   template:
@@ -14,18 +15,22 @@
     group: root
     mode: 0644
   notify: restart denyhosts
+  tags: configure
 
 - name: copy purge_denyhosts.sh script
   copy:
     src: purge_denyhosts.sh
     dest: /usr/local/bin/purge_denyhosts.sh
     mode: 0755
+  tags: configure
 
 - name: copy denyhost allowed hosts
   copy:
     src: allowed-hosts
     dest: /var/lib/denyhosts/allowed-hosts
+  tags: configure
 
 # state=restarted restart regardles of current state
 - name: ensure denyhosts started
   service: name=denyhosts state=started enabled=yes
+  tags: service

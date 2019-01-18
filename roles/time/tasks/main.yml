@@ -1,12 +1,13 @@
 
 - name: Install NTP
   apt: package=ntp state=present update_cache=yes cache_valid_time=3600
-  tags: ntp
+  tags: packages
 
 - name: Make sure NTP is started up
   service: name=ntp state=started enabled=yes
-  tags: ntp
+  tags: service
 
 - name: set timezone to Europe/Rome
   timezone:
     name: Europe/Rome
+  tags: configure

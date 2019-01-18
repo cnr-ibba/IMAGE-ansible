@@ -3,7 +3,7 @@
   file:
     path: /etc/nginx/sites-enabled/default
     state: absent
-  tags: ['image-configure']
+  tags: ['image-configure', 'configure']
 
 - name: Remove default home page
   file:
@@ -15,7 +15,7 @@
   template:
     src: image.conf.j2
     dest: /etc/nginx/sites-available/image.conf
-  tags: ['image-configure']
+  tags: ['image-configure', 'configure']
   notify: Reload Nginx
 
 - name: Enable image stuff
@@ -23,7 +23,7 @@
     src: /etc/nginx/sites-available/image.conf
     dest: /etc/nginx/sites-enabled/image.conf
     state: link
-  tags: ['image-configure']
+  tags: ['image-configure', 'configure']
   notify: Reload Nginx
 
 - name: Copy maintenance page

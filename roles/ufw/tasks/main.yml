@@ -2,10 +2,12 @@
 
 - name: Install ufw
   apt: package=ufw state=present
+  tags: packages
 
 - name: Allow everything and enable UFW
   ufw:
     state: enabled
+  tags: configure
 
 # https://github.com/christurnertv/digital-ocean-ansible/blob/4dce08b49b874469b8b7a6a51bacc48340bcfb4a/tasks/ufw.yml#L9
 - name: Configure ufw defaults
@@ -13,10 +15,12 @@
   with_items:
     - { direction: 'incoming', policy: 'deny' }
     - { direction: 'outgoing', policy: 'allow' }
+  tags: configure
 
 - name: Set UFW logging
   ufw:
     logging: on
+  tags: configure
 
 # Sometimes it is desirable to let the sender know when traffic is
 # being denied, rather than simply ignoring it. In these cases, use
@@ -26,6 +30,7 @@
     rule: reject
     port: auth
     log: yes
+  tags: configure
 
 # ufw supports connection rate limiting, which is useful for protecting
 # against brute-force login attacks. ufw will deny connections if an IP
@@ -37,6 +42,7 @@
     rule: limit
     port: ssh
     proto: tcp
+  tags: configure
 
 # Allow OpenSSH. (Note that as ufw manages its own state, simply removing
 # a rule=allow task can leave those ports exposed. Either use delete=yes
@@ -46,6 +52,7 @@
     rule: allow
     name: OpenSSH
     delete: yes
+  tags: configure
 
 # deny docker ports from outside
 - name: disable docker ports from outside
@@ -53,6 +60,7 @@
   with_items:
     - 2375
     - 2376
+  tags: configure
 
 # enable Nginx ports
 - name: Enable NgINX ports
@@ -60,6 +68,7 @@
   with_items:
     - Nginx HTTP
     - Nginx HTTPS
+  tags: configure
 
 # allow sending mail
 - name: Enable sending email
@@ -68,3 +77,4 @@
     port: 587
     proto: tcp
     delete: yes
+  tags: configure

@@ -5,3 +5,4 @@
   notify:
     #  This notifies any Handler named "Start Nginx" after the Task is run.
     - Start Nginx
+  tags: packages

@@ -6,6 +6,7 @@
     state: present
     update_cache: yes
     cache_valid_time: 3600
+  tags: packages
 
 - name: Configure logwatch (/etc/logwatch/conf/logwatch.conf)
   template:
@@ -14,3 +15,4 @@
     owner: root
     group: root
     mode: 0644
+  tags: configure
