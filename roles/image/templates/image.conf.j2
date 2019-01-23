@@ -86,6 +86,11 @@ server {
     # set variable in location
     set $my_port 26081;
 
+    # https://stackoverflow.com/a/35553666/4385116
+    # grant permission to any site (included data-portal) to see this data
+    # https://serverfault.com/questions/162429/how-do-i-add-access-control-allow-origin-in-nginx
+    add_header Access-Control-Allow-Origin *;
+
     # Add info to webpages
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
