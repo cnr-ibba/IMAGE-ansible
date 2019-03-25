@@ -34,6 +34,9 @@ server {
 
   server_name {{ image_server_name }};
 
+  # max upload size
+  client_max_body_size 25M;   # adjust to taste
+
   location / {
     # is required that angular get index.html when no uri is found
     # angular will decide to throw 404 page or show a different page
