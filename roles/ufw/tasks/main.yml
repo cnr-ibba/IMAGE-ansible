@@ -70,8 +70,8 @@
     - Nginx HTTPS
   tags: configure
 
-# allow sending mail
-- name: Enable sending email
+# disallow sending mail
+- name: Disable sending email
   ufw:
     rule: allow
     port: 587
