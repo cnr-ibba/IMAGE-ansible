@@ -8,7 +8,7 @@
     dest: ~image/IMAGE-InjectTool
     version: master
 
-- name: Copy first .env configuration
+- name: Copy .env configuration
   become: True
   become_user: image
   template:
