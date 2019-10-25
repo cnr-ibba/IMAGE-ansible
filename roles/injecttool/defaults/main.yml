@@ -5,3 +5,6 @@ injecttool_celety_mail_backend: 'django.core.mail.backends.smtp.EmailBackend'
 InjectTool_emal_host: 'smtp.gmail.com'
 injecttool_email_use_tls: True
 injecttool_email_port: 587
+biosample_url: "https://wwwdev.ebi.ac.uk/biosamples/samples"
+ebi_aap_api_auth: "https://explore.api.aai.ebi.ac.uk/auth"
+biosample_api_root: "https://submission-test.ebi.ac.uk/api/"
