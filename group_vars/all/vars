@@ -5,5 +5,3 @@ logwatch_range: "yesterday"       # The default time range for the Logwatch repo
 logwatch_output: "mail"         # The output method of the Logwatch report
 logwatch_format: "text"           # The format of the Logwatch report
 logwatch_cron_time: "daily"       # Cron special time specification nickname - must match with logwatch range!
-image_server_name: wp5image.eu www.wp5image.eu
-letsencrypt_domain: wp5image.eu

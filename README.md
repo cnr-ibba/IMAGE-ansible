@@ -26,11 +26,36 @@ host.
 ### Install role dependencies
 
 You need [do agent](https://galaxy.ansible.com/andrewsomething/do-agent) 3rd party
-module in order to install into the monitoring tools in your *droplet*
+module in order to install into the monitoring tools in your *droplet*. You need also
+a [ssmtp](https://galaxy.ansible.com/cleberjsantos/ansible-ssmtp) role in order
+to configure ssmtp and sending mail from the server:
 
 ```
 $ ansible-galaxy install andrewsomething.do-agent
 $ ansible-galaxy install cleberjsantos.ansible-ssmtp
+```
+
+### test connection to host
+
+To execute a generic command, call `ansible` + `<pattern>` + `-m <module>`, for
+example, in order to testing hosts:
+
+```
+$ ansible all -m ping
+$ ansible testing -m ping
+```
+
+You can also pass additional arguments to modules, if they support them:
+
+```
+$ ansible all -m command -a "hostname"
+```
+
+The `-m command` is a default option, so the following syntax have the same effects
+of the previous:
+
+```
+$ ansible all -a "hostname"
 ```
 
 ### Upgrade system
