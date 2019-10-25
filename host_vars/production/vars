@@ -1,0 +1,5 @@
+image_server_name: wp5image.eu www.wp5image.eu
+letsencrypt_domain: wp5image.eu
+biosample_url: "https://www.ebi.ac.uk/biosamples/samples"
+ebi_aap_api_auth: "https://api.aai.ebi.ac.uk/auth"
+biosample_api_root: "https://submission.ebi.ac.uk/api/"
