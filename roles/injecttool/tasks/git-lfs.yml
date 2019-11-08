@@ -1,0 +1,40 @@
+# For more detail, see https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh
+# adapted from https://gist.github.com/tsuchm/4cb3fd65927fe49ea77c256352a8915e
+
+- name: install git-lfs requirement
+  apt:
+    name: ['gnupg', 'curl', 'debian-archive-keyring']
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+
+
+# Because Git-LFS repository use HTTPS, apt-transport-https package is necessary.
+- name: Install apt-transport-https
+  apt:
+    name: apt-transport-https
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Add Git-LFS repository key
+  apt_key:
+    url: https://packagecloud.io/github/git-lfs/gpgkey
+    state: present
+
+- name: Check that the github_git-lfs.list exists
+  stat:
+    path: /etc/apt/sources.list.d/github_git-lfs.list
+  register: stat_result
+
+- name: Add Git-LFS repository source
+  get_url:
+    url: https://packagecloud.io/install/repositories/github/git-lfs/config_file.list?os=ubuntu&dist={{ansible_distribution_release}}&source=script
+    dest: /etc/apt/sources.list.d/github_git-lfs.list
+    owner: root
+    group: root
+    mode: 0644
+  when: stat_result.stat.exists == False
+
+- name: Add git-lfs package
+  apt: name=git-lfs state=latest update_cache=yes
