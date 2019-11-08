@@ -65,9 +65,14 @@ server {
     root /usr/share/nginx/html/;
   }
 
+  # add a trailing slash to image location
+  location /image {
+    return 302 /image/;
+  }
+
   location /image/ {
     # temporary redirect to another domain
-    return 307 $scheme://{{ injecttool_server_name }};
+    rewrite /image/(.*) $scheme://{{ injecttool_server_name }}/$1 last;
   }
 
   location /data_portal/ {
