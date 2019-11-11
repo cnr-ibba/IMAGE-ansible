@@ -28,7 +28,7 @@ You need to configure your `DNS` and set up those domains to point to the create
 
 ```
 test.wp5image.eu
-inject.test.wp5image.eu
+injecttest.wp5image.eu
 ```
 
 ### The inventory file
@@ -102,7 +102,7 @@ registered domain and DNS configured to your target machine).
 ### Install without certificates
 
 ```
-$ ansible-playbook production.yml --skip-tags='letsencrypt'
+$ ansible-playbook wp5image.yml --limit production --skip-tags='letsencrypt'
 ```
 
 ### Install with certificates
@@ -113,21 +113,30 @@ the `letsencrypt` role (this is already defined in `digitalocean.yml` playbook b
 setting the `image` tag on both roles). Configure the whole environment with:
 
 ```
-$ ansible-playbook production.yml
+$ ansible-playbook wp5image.yml --limit production
 ```
 
 ### Other useful commands:
 
 ```
 # check roles without modification
-$ ansible-playbook production.yml --check
+$ ansible-playbook wp5image.yml --limit production --check
 # list available tags (refer to digitalocean.yml)
-$ ansible-playbook production.yml --list-tags
+$ ansible-playbook wp5image.yml --limit production --list-tags
 # install only a tag
-$ ansible-playbook production.yml --tags injecttool
+$ ansible-playbook wp5image.yml --limit production --tags injecttool
 # update image NGINX configuration on testing environment, without set SSL stuff
-$ ansible-playbook testing.yml --tags='image-configure'
+$ ansible-playbook wp5image.yml --limit testing --tags='image-configure'
 ```
+
+# Manage certificates
+
+Please follow this [tutorial](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04)
+to configure certbot. Then follow this [guide](https://certbot-dns-digitalocean.readthedocs.io/en/stable/)
+to uptain a wildcard certificate with digitalocean. Ideally there should be only
+a master server that renew the certificate. If you have subdomains in other machines,
+you will need to copy certificates in order to not hit the letsencrypt limit when
+renewing certificates from all machines
 
 Configure and start WP5 services
 --------------------------------
