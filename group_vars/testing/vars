@@ -1,3 +1,3 @@
-image_server_name: wp5image.eu test.wp5image.eu
+image_server_name: test.wp5image.eu
 letsencrypt_domain: wp5image.eu
-injecttool_server_name: inject.test.wp5image.eu
+injecttool_server_name: injecttest.wp5image.eu

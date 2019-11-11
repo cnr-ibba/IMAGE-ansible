@@ -7,30 +7,36 @@
   tags: packages
 
 - name: installing certbot
-  apt: pkg=python-certbot-nginx state=present update_cache=true cache_valid_time=3600
+  apt:
+    pkg:
+      - python-certbot-nginx
+      - python3-certbot-dns-digitalocean
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
   tags: packages
 
 - name: listen for 433 ports on ipv4
-  lineinfile:
+  replace:
     path: /etc/nginx/sites-available/image.conf
-    regexp: 'listen 80 default_server;'
-    line: '  listen 443 ssl;'
+    regexp: 'listen 80;'
+    replace: 'listen 443 ssl;'
   tags: ['image-configure', 'configure']
   notify: Reload Nginx
 
 - name: listen for 433 ports on ipv6
-  lineinfile:
+  replace:
     path: /etc/nginx/sites-available/image.conf
-    regexp: 'listen \[\:\:\]\:80 default_server;'
-    line: '  listen [::]:443 ssl ipv6only=on;'
+    regexp: 'listen \[\:\:\]\:80;'
+    replace: 'listen [::]:443 ssl;'
   tags: ['image-configure', 'configure']
   notify: Reload Nginx
 
-- name: add SSL configuration
+- name: add SSL configuration for data portal
   blockinfile:
     path: /etc/nginx/sites-available/image.conf
     marker: "  # {mark} ANSIBLE SSL"
-    insertafter: "# SSL configuration"
+    insertafter: "# SSL configuration for data portal"
     content: |2
         ssl_certificate /etc/letsencrypt/live/{{ letsencrypt_domain }}/fullchain.pem;
         ssl_certificate_key /etc/letsencrypt/live/{{ letsencrypt_domain }}/privkey.pem;
@@ -39,26 +45,43 @@
   tags: ['image-configure', 'configure']
   notify: Reload Nginx
 
+- name: add SSL configuration for InjectTool
+  blockinfile:
+    path: /etc/nginx/sites-available/image.conf
+    marker: "  # {mark} ANSIBLE SSL"
+    insertafter: "# SSL configuration for InjectTool"
+    content: |2
+        ssl_certificate /etc/letsencrypt/live/{{ letsencrypt_domain }}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{ letsencrypt_domain }}/privkey.pem;
+        include /etc/letsencrypt/options-ssl-nginx.conf;
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+  tags: ['image-configure', 'configure']
+  notify: Reload Nginx
+
+
 - name: redirect http traffic to https
   blockinfile:
     path: /etc/nginx/sites-available/image.conf
     block: |
       # redirect traffic to https port, and disable the standard http port
       server {
-        if ($host = www.{{ letsencrypt_domain }}) {
-            return 301 https://$host$request_uri;
-        }
-
-        if ($host = {{ letsencrypt_domain }}) {
-            return 301 https://$host$request_uri;
-        }
-
-        listen 80 default_server;
-        listen [::]:80 default_server;
+        listen 80;
+        listen [::]:80;
 
         server_name {{ image_server_name }};
 
-        return 404;
+        return 301 https://$host$request_uri;
+
+      }
+
+      server {
+        listen 80;
+        listen [::]:80;
+
+        server_name {{ injecttool_server_name }};
+
+        return 301 https://$host$request_uri;
+
       }
     marker: "# {mark} ANSIBLE REDIRECT"
   tags: ['image-configure', 'configure']

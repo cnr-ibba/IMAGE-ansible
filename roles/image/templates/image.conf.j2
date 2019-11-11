@@ -22,12 +22,21 @@ upstream channels-backend {
 }
 
 # Default server configuration
-#
+# redirect all non-www request to www
 server {
-  listen 80 default_server;
-  listen [::]:80 default_server;
+    listen       80 default_server;
+    listen       [::]:80 default_server;
+    server_name  {{ letsencrypt_domain }};
+    return       301 http://{{ image_server_name }}$request_uri;
+}
 
-  # SSL configuration
+
+# web portal server
+server {
+  listen 80;
+  listen [::]:80;
+
+  # SSL configuration for data portal
 
   # this is the default root directory. /usr/share/nginx/html will contain
   # accessory files, like image_maintenance or robots.txt that are not stored
@@ -107,7 +116,7 @@ server {
   listen 80;
   listen [::]:80;
 
-  # SSL configuration
+  # SSL configuration for InjectTool
 
   # this is the default root directory. /usr/share/nginx/html will contain
   # accessory files, like image_maintenance or robots.txt that are not stored
