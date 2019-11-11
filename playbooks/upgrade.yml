@@ -1,5 +1,5 @@
 ---
-- hosts: digitalocean
+- hosts: all
   tasks:
   - name: Upgrade all packages to the latest version
     apt:

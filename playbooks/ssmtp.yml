@@ -1,5 +1,5 @@
 ---
-- hosts: digitalocean # all
+- hosts: production # all
 
   roles:
     # to install: ansible-galaxy install cleberjsantos.ansible-ssmtp

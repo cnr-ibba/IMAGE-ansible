@@ -1,7 +1,9 @@
 
-[digitalocean]
-production ansible_host=www.wp5image.eu  ansible_user=root ansible_python_interpreter=/usr/bin/python3
-testing ansible_host=test.wp5image.eu  ansible_user=root ansible_python_interpreter=/usr/bin/python3
+[production]
+wp5image ansible_host=www.wp5image.eu  ansible_user=root ansible_python_interpreter=/usr/bin/python3
+
+[testing]
+wp5image-test ansible_host=test.wp5image.eu  ansible_user=root ansible_python_interpreter=/usr/bin/python3
 
 [control]
 master ansible_connection=local

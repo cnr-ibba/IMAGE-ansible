@@ -14,14 +14,29 @@ handle it for you, you need to provide this requirements by your self
 All these instructions are referred to a [digitalocean](https://cloud.digitalocean.com)
 docker image instance and they are optimized in such environment
 
+Instantiate the testing machine
+-------------------------------
+
+To set up the testing machine, you need to export your DigitalOcan token in the
+`DIGITALOCEAN_ACCESS_TOKEN`. Then call
+
+```
+$ python scripts/create_droplet.py
+```
+
+You need to configure your `DNS` and set up those domains to point to the created droplet:
+
+```
+test.wp5image.eu
+injecttest.wp5image.eu
+```
+
 ### The inventory file
 
-Currently there are two machines configured in inventory files (*production* and *testing*),
+Currently there are two groups configured in inventory files (*production* and *testing*),
 they are defined using *DNS*, so you need to update your *DNS* records if you
-need to change the ip adresses of such machines. The default group
-is `digitalocean`, but you could apply the configuration to a particoular
-server providing `--limit` option and calling one of *production* and *testing*
-host.
+need to change the ip adresses of such machines. `production.yml` and `testing.yml`
+are the two playbook that are applied respectively to the two groups
 
 ### Install role dependencies
 
@@ -70,7 +85,8 @@ $ ansible-playbook --limit production playbooks/restart.yml
 
 ### Configure ssmtp
 
-You can configure *ssmtp* to send mail using an external email address:
+You can configure *ssmtp* to send mail using an external email address. This is
+configured for the production servers:
 
 ```
 $ ansible-playbook --limit production playbooks/ssmtp.yml
@@ -86,7 +102,7 @@ registered domain and DNS configured to your target machine).
 ### Install without certificates
 
 ```
-$ ansible-playbook --limit testing digitalocean.yml --skip-tags='letsencrypt'
+$ ansible-playbook wp5image.yml --limit production --skip-tags='letsencrypt'
 ```
 
 ### Install with certificates
@@ -97,21 +113,30 @@ the `letsencrypt` role (this is already defined in `digitalocean.yml` playbook b
 setting the `image` tag on both roles). Configure the whole environment with:
 
 ```
-$ ansible-playbook --limit production digitalocean.yml
+$ ansible-playbook wp5image.yml --limit production
 ```
 
 ### Other useful commands:
 
 ```
 # check roles without modification
-$ ansible-playbook --limit production digitalocean.yml --check
+$ ansible-playbook wp5image.yml --limit production --check
 # list available tags (refer to digitalocean.yml)
-$ ansible-playbook digitalocean.yml --list-tags
-# install only a tag on both hosts
-$ ansible-playbook digitalocean.yml --tags injecttool
+$ ansible-playbook wp5image.yml --limit production --list-tags
+# install only a tag
+$ ansible-playbook wp5image.yml --limit production --tags injecttool
 # update image NGINX configuration on testing environment, without set SSL stuff
-$ ansible-playbook digitalocean.yml --limit testing --skip-tags='letsencrypt' --tags='image-configure'
+$ ansible-playbook wp5image.yml --limit testing --tags='image-configure'
 ```
+
+# Manage certificates
+
+Please follow this [tutorial](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04)
+to configure certbot. Then follow this [guide](https://certbot-dns-digitalocean.readthedocs.io/en/stable/)
+to uptain a wildcard certificate with digitalocean. Ideally there should be only
+a master server that renew the certificate. If you have subdomains in other machines,
+you will need to copy certificates in order to not hit the letsencrypt limit when
+renewing certificates from all machines
 
 Configure and start WP5 services
 --------------------------------

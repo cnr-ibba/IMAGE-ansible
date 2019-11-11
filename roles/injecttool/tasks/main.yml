@@ -1,4 +1,9 @@
 ---
+# install git lfs for injecttoool
+- import_tasks: git-lfs.yml
+  tags:
+    - git-lfs
+
 # tasks file for injecttool
 - name: install InjectTool from git
   become: True
@@ -7,6 +12,14 @@
     repo: https://github.com/cnr-ibba/IMAGE-InjectTool.git
     dest: ~image/IMAGE-InjectTool
     version: master
+
+- name: Install git lfs hooks
+  become: True
+  become_user: image
+  command: git lfs install
+  args:
+    chdir: ~image/IMAGE-InjectTool
+    creates: ~image/IMAGE-InjectTool/.git/lfs
 
 - name: Copy .env configuration
   become: True
