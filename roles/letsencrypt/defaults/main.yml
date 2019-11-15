@@ -1,3 +1,4 @@
 ---
 # defaults file for letsencrypt
-letsencrypt_domain: example.com
+domain_name: example.com
+old_domain_name: example.com

@@ -1,3 +1,6 @@
-image_server_name: test.wp5image.eu
-letsencrypt_domain: wp5image.eu
-injecttool_server_name: injecttest.wp5image.eu
+domain_name: image2020genebank.eu
+image_server_name: test.image2020genebank.eu
+injecttool_server_name: injecttest.image2020genebank.eu
+old_domain_name: wp5image.eu
+old_image_server_name: test.wp5image.eu
+old_injecttool_server_name: injecttest.wp5image.eu

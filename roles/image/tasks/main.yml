@@ -5,26 +5,65 @@
     state: absent
   tags: ['image-configure', 'configure']
 
+- name: Remove the old configuration files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/nginx/sites-enabled/image.conf
+    - /etc/nginx/sites-available/image.conf
+  tags: ['image-configure', 'configure']
+
 - name: Remove default home page
   file:
     path: /var/www/html/index.nginx-debian.html
     state: absent
   tags: ['image-data']
 
-- name: Copy nginx configuration for image stuff
+- name: Copy nginx configuration for wp5image.eu domain
   template:
-    src: image.conf.j2
-    dest: /etc/nginx/sites-available/image.conf
+    src: wp5image.conf.j2
+    dest: /etc/nginx/sites-available/wp5image.conf
   tags: ['image-configure', 'configure']
   notify: Reload Nginx
 
-- name: Enable image stuff
+- stat:
+    path: /etc/nginx/sites-available/wp5image.conf
+  tags: ['image-configure', 'configure']
+  register: wp5image
+
+# create symlink if the src path exists
+- name: Enable wp5image.eu stuff
   file:
-    src: /etc/nginx/sites-available/image.conf
-    dest: /etc/nginx/sites-enabled/image.conf
+    src: /etc/nginx/sites-available/wp5image.conf
+    dest: /etc/nginx/sites-enabled/wp5image.conf
     state: link
+  when: wp5image.stat.exists
   tags: ['image-configure', 'configure']
   notify: Reload Nginx
+
+- name: Copy nginx configuration for image2020genebank.eu domain
+  template:
+    src: image2020genebank.conf.j2
+    dest: /etc/nginx/sites-available/image2020genebank.conf
+  tags: ['image-configure', 'configure']
+  notify: Reload Nginx
+
+- stat:
+    path: /etc/nginx/sites-available/image2020genebank.conf
+  tags: ['image-configure', 'configure']
+  register: image2020genebank
+
+# create symlink if the src path exists
+- name: Enable wp5image.eu stuff
+  file:
+    src: /etc/nginx/sites-available/image2020genebank.conf
+    dest: /etc/nginx/sites-enabled/image2020genebank.conf
+    state: link
+  when: image2020genebank.stat.exists
+  tags: ['image-configure', 'configure']
+  notify: Reload Nginx
+
 
 - name: Copy maintenance page
   copy: src=maintenance.html dest=/usr/share/nginx/html owner=root group=root

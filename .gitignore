@@ -8,4 +8,4 @@
 # exclude temporary files
 *~
 .vagrant/
-letsencrypt-wp5image/
+*.tar.gz
