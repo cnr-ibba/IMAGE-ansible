@@ -23,24 +23,47 @@
 - name: Copy nginx configuration for wp5image.eu domain
   template:
     src: wp5image.conf.j2
-    dest: /etc/nginx/sites-available/wp5image.conf.j2
+    dest: /etc/nginx/sites-available/wp5image.conf
   tags: ['image-configure', 'configure']
   notify: Reload Nginx
 
 - stat:
-    path: /etc/nginx/sites-available/wp5image.conf.j2
+    path: /etc/nginx/sites-available/wp5image.conf
   tags: ['image-configure', 'configure']
   register: wp5image
 
 # create symlink if the src path exists
 - name: Enable wp5image.eu stuff
   file:
-    src: /etc/nginx/sites-available/wp5image.conf.j2
-    dest: /etc/nginx/sites-enabled/wp5image.conf.j2
+    src: /etc/nginx/sites-available/wp5image.conf
+    dest: /etc/nginx/sites-enabled/wp5image.conf
     state: link
   when: wp5image.stat.exists
   tags: ['image-configure', 'configure']
   notify: Reload Nginx
+
+- name: Copy nginx configuration for image2020genebank.eu domain
+  template:
+    src: image2020genebank.conf.j2
+    dest: /etc/nginx/sites-available/image2020genebank.conf
+  tags: ['image-configure', 'configure']
+  notify: Reload Nginx
+
+- stat:
+    path: /etc/nginx/sites-available/image2020genebank.conf
+  tags: ['image-configure', 'configure']
+  register: image2020genebank
+
+# create symlink if the src path exists
+- name: Enable wp5image.eu stuff
+  file:
+    src: /etc/nginx/sites-available/image2020genebank.conf
+    dest: /etc/nginx/sites-enabled/image2020genebank.conf
+    state: link
+  when: image2020genebank.stat.exists
+  tags: ['image-configure', 'configure']
+  notify: Reload Nginx
+
 
 - name: Copy maintenance page
   copy: src=maintenance.html dest=/usr/share/nginx/html owner=root group=root

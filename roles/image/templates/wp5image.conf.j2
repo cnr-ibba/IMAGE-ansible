@@ -19,10 +19,10 @@
 # Default server configuration
 # redirect all non-www request to www on new domain
 server {
-    listen       80 default_server;
-    listen       [::]:80 default_server;
+    listen       80;
+    listen       [::]:80;
     server_name  {{ old_domain_name }};
-    return       301 http://{{ image_server_name }}$request_uri;
+    return       307 http://{{ image_server_name }}$request_uri;
 }
 
 
@@ -36,7 +36,7 @@ server {
   # SSL configuration for data portal
 
   # redirect all traffic
-  return       301 http://{{ image_server_name }}$request_uri;
+  return       307 http://{{ image_server_name }}$request_uri;
 }
 
 
@@ -50,6 +50,6 @@ server {
   # SSL configuration for InjectTool
 
   # redirect all traffic
-  return       301 http://{{ injecttool_server_name }}$request_uri;
+  return       307 http://{{ injecttool_server_name }}$request_uri;
 
 }
