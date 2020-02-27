@@ -35,7 +35,7 @@
       tags: injecttool
     - role: common_data_pool
       tags: common_data_pool
-    - role: angular_cli
-      tags: angular_cli
+    - role: geerlingguy.nodejs
+      tags: nodejs
     - role: frontend
       tags: frontend

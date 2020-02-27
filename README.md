@@ -50,6 +50,7 @@ to configure ssmtp and sending mail from the server:
 ```
 $ ansible-galaxy install andrewsomething.do-agent
 $ ansible-galaxy install cleberjsantos.ansible-ssmtp
+$ ansible-galaxy install geerlingguy.nodejs
 ```
 
 ### test connection to host

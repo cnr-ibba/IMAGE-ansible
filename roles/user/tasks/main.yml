@@ -25,3 +25,13 @@
     group: image
     mode: 0600
   tags: configure
+
+- name: Let 'ng build --prod' works with low memory
+  blockinfile:
+    path: ~image/.profile
+    block: |
+      # Let 'ng build --prod' works with low memory
+      # https://stackoverflow.com/q/60375333
+      export NODE_OPTIONS="--max_old_space_size=2000"
+    marker: "# {mark} ANSIBLE NODE ENVIRONMENT VARIABLES"
+  tags: configure
