@@ -8,16 +8,9 @@
     dest: ~image/IMAGE-CommonDataPool
     version: master
 
-- name: Copy first .env configuration
+- name: Copy Environment configuration
   become: True
   become_user: image
   template:
-    src: database.j2
-    dest: ~image/IMAGE-CommonDataPool/image_backend/database1_env
-
-- name: Copy second .env configuration
-  become: True
-  become_user: image
-  template:
-    src: django.j2
-    dest: ~image/IMAGE-CommonDataPool/image_backend/api_service/.env
+    src: environment.j2
+    dest: ~image/IMAGE-CommonDataPool/.env
