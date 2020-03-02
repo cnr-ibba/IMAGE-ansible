@@ -29,6 +29,8 @@ You need to configure your `DNS` and set up those domains to point to the create
 ```
 test.wp5image.eu
 injecttest.wp5image.eu
+test.image2020genebank.eu
+injecttest.image2020genebank.eu
 ```
 
 ### The inventory file
@@ -43,11 +45,14 @@ are the two playbook that are applied respectively to the two groups
 You need [do agent](https://galaxy.ansible.com/andrewsomething/do-agent) 3rd party
 module in order to install into the monitoring tools in your *droplet*. You need also
 a [ssmtp](https://galaxy.ansible.com/cleberjsantos/ansible-ssmtp) role in order
-to configure ssmtp and sending mail from the server:
+to configure ssmtp and sending mail from the server and
+[geerlingguy.nodejs](https://galaxy.ansible.com/geerlingguy/nodejs). Those
+modules are already in the local `./galaxy_roles` path and are configure already
+in `ansible.cfg`. If you need to install a new role, please add it into `./galaxy_roles`
+path and then track it into git
 
 ```
-$ ansible-galaxy install andrewsomething.do-agent
-$ ansible-galaxy install cleberjsantos.ansible-ssmtp
+$ ansible-galaxy install --roles-path ./galaxy_roles/ <a new role>
 ```
 
 ### test connection to host

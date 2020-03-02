@@ -72,3 +72,25 @@
     marker: "# {mark} ANSIBLE REDIRECT"
   tags: ['image-configure', 'configure']
   notify: Reload Nginx
+
+- name: redirect traffic from {{ old_domain_name }} to {{ image_server_name }}
+  blockinfile:
+    path: /etc/nginx/sites-available/wp5image.conf
+    block: |
+      # redirect traffic to https port
+      server {
+        listen 443;
+        listen [::]:443;
+        server_name {{ old_domain_name }};
+
+        # define certificates, even for this redirect
+        ssl_certificate /etc/letsencrypt/live/{{ old_domain_name }}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{ old_domain_name }}/privkey.pem;
+        include /etc/letsencrypt/options-ssl-nginx.conf;
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+        return 307 https://{{ image_server_name }}$request_uri;
+      }
+    marker: "# {mark} ANSIBLE REDIRECT TO WWW"
+  tags: ['image-configure', 'configure']
+  notify: Reload Nginx
