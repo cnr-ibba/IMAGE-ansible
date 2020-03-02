@@ -1,0 +1,25 @@
+---
+
+galaxy_info:
+  author: Cleber J Santos
+  description: Installs and configures ssmtp 
+  license: GPLv2
+  min_ansible_version: 1.9
+  platforms:
+    - name: EL
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+  galaxy_tags:
+    - system
+    - sendmail
+    - mail
+dependencies: []
