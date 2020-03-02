@@ -6,6 +6,11 @@ logwatch_output: "mail"         # The output method of the Logwatch report
 logwatch_format: "text"           # The format of the Logwatch report
 logwatch_cron_time: "daily"       # Cron special time specification nickname - must match with logwatch range!
 
+# Docker Compose options.
+docker_install_compose: true
+docker_compose_version: "1.22.0"
+docker_compose_path: /usr/local/bin/docker-compose
+
 # packages for building IMAGE-Portal project
 nodejs_npm_global_packages:
   - name: '@angular/cli'

@@ -17,12 +17,22 @@
     cache_valid_time: 3600
   tags: packages
 
-- name: Install Docker Compose
+- name: Install Docker Community Edition
   apt:
-    name: ['docker-ce', 'docker-compose']
+    name: docker-ce
     state: present
     update_cache: yes
     cache_valid_time: 3600
+  tags: packages
+
+- name: Remove Docker Compose Package
+  apt:
+    name: docker-compose
+    state: absent
+  tags: packages
+
+# install docker-compose from another role
+- import_tasks: docker-compose.yml
   tags: packages
 
 - name: Add docker configuration file
