@@ -1,0 +1,49 @@
+---
+- hosts: production
+  gather_facts: false
+  tasks:
+    - name: Start service nginx, if not started
+      service:
+        name: nginx
+        state: started
+
+    - name: verify nginx is listening on 80
+      wait_for: port=80 timeout=1
+
+    - name: verify nginx is listening on 443
+      wait_for: port=443 timeout=1
+
+    - name: Start service docker, if not started
+      service:
+        name: docker
+        state: started
+
+- hosts: control
+  gather_facts: false
+  tasks:
+    - name: verify portal index response
+      uri: url=https://{{item}} return_content=yes
+      with_items: "{{ image_server_name }}"
+      register: portal_index
+
+    - fail: msg="portal failed to return content"
+      when: "'Please enable JavaScript to continue using this application' not in item.content"
+      with_items: "{{ portal_index.results }}"
+
+    - name: verify InjectTool index response
+      uri: url=https://{{item}} return_content=yes
+      with_items: "{{ injecttool_server_name }}"
+      register: portal_index
+
+    - fail: msg="InjectTool failed to return content"
+      when: "'Welcome to the IMAGE InjectTool!' not in item.content"
+      with_items: "{{ portal_index.results }}"
+
+    - name: verify backend organism response
+      uri: url=https://{{item}} return_content=yes
+      with_items: "{{ backend_organism }}"
+      register: backend
+
+    - fail: msg="backend organism failed to return content"
+      when: "'List Create Organisms' not in item.content"
+      with_items: "{{ backend.results }}"

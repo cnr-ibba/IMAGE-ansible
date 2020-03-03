@@ -1,0 +1,3 @@
+image_server_name: www.image2020genebank.eu
+injecttool_server_name: inject.image2020genebank.eu
+backend_organism: www.image2020genebank.eu/data_portal/backend/organism/?format=api
