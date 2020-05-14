@@ -6,7 +6,7 @@
     shell: /bin/bash
     groups: docker, sudo
     append: yes
-  tags: configure
+  tags: ['user', 'configure']
 
 - name: Create .ssh folder
   file:
@@ -15,7 +15,7 @@
     owner: image
     group: image
     mode: 0700
-  tags: configure
+  tags: ['user', 'configure']
 
 - name: Upload SSH key
   copy:
@@ -24,7 +24,11 @@
     owner: image
     group: image
     mode: 0600
-  tags: configure
+  tags: ['user', 'configure']
+
+# execute stuff to configure dotfiles
+- import_tasks: dotfiles.yml
+  tags: ['user', 'configure']
 
 - name: Let 'ng build --prod' works with low memory
   blockinfile:
@@ -34,4 +38,4 @@
       # https://stackoverflow.com/q/60375333
       export NODE_OPTIONS="--max_old_space_size=2000"
     marker: "# {mark} ANSIBLE NODE ENVIRONMENT VARIABLES"
-  tags: configure
+  tags: ['user', 'configure']

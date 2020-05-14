@@ -6,4 +6,4 @@
   git:
     repo: https://github.com/cnr-ibba/IMAGE-Portal.git
     dest: ~image/IMAGE-Portal
-    version: master
+    version: "{{ portal_git_version }}"

@@ -1,0 +1,73 @@
+---
+- name: install ubuntu dotfiles from git
+  become: True
+  become_user: image
+  git:
+    repo: https://github.com/bunop/dotfiles.git
+    dest: ~image/dotfiles
+    version: ubuntu
+    # just ensuring the repo checkout exists
+    update: no
+  tags: ['dotfiles']
+
+- stat:
+    path: ~image/dotfiles
+  register: dotfiles
+  tags: ['dotfiles']
+
+- stat:
+    path: "~image/.{{ item }}"
+  register: bash_config
+  tags: ['dotfiles']
+  loop:
+    - bash_aliases
+    - bash_logout
+    - bashrc
+    - docker_aliases
+    - profile
+
+# - debug:
+#     # msg: "Path: {{ item.stat.path }}"
+#     var: item
+#   tags: ['dotfiles']
+#   loop: "{{ bash_config.results }}"
+
+- name: remove old configuration files
+  become: True
+  become_user: image
+  file:
+    path: "{{ item.stat.path }}"
+    state: absent
+  when: dotfiles.stat.exists and item.stat.exists and not item.stat.islnk
+  loop: "{{ bash_config.results }}"
+  tags: ['dotfiles']
+
+# create symlink if the src path exists
+- name: link to bash configuration files
+  become: True
+  become_user: image
+  file:
+    src: "~image/dotfiles/bash/{{ item }}"
+    dest: "~image/.{{ item }}"
+    state: link
+  loop:
+    - bash_aliases
+    - bash_logout
+    - bashrc
+    - docker_aliases
+    - profile
+  when: dotfiles.stat.exists
+  tags: ['dotfiles']
+
+- name: link to other configuration files
+  become: True
+  become_user: image
+  file:
+    src: "~image/dotfiles/{{ item.path }}/{{ item.file }}"
+    dest: "~image/.{{ item.file }}"
+    state: link
+  loop:
+    - { path: 'tmux', file: 'tmux.conf' }
+    - { path: 'git', file: 'gitconfig' }
+  when: dotfiles.stat.exists
+  tags: ['dotfiles']

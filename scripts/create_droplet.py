@@ -27,7 +27,7 @@ status, result = client.droplets.create(
     name='wp5image-test',
     region='fra1',
     size='s-1vcpu-1gb',
-    image='docker-18-04',
+    image='ubuntu-18-04-x64',
     ssh_keys=keys,
     private_networking=True)
 
