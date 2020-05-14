@@ -11,7 +11,7 @@
   git:
     repo: https://github.com/cnr-ibba/IMAGE-InjectTool.git
     dest: ~image/IMAGE-InjectTool
-    version: master
+    version: "{{ injecttool_git_version }}"
 
 - name: Install git lfs hooks
   become: True

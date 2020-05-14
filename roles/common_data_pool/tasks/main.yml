@@ -6,7 +6,7 @@
   git:
     repo: https://github.com/cnr-ibba/IMAGE-CommonDataPool.git
     dest: ~image/IMAGE-CommonDataPool
-    version: master
+    version: "{{ common_data_pool_git_version }}"
 
 - name: Copy Environment configuration
   become: True
