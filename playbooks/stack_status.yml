@@ -39,11 +39,11 @@
       when: "'Welcome to the IMAGE InjectTool!' not in item.content"
       with_items: "{{ portal_index.results }}"
 
-    - name: verify backend organism response
+    - name: verify backend root response
       uri: url=https://{{item}} return_content=yes
-      with_items: "{{ backend_organism }}"
+      with_items: "{{ backend_root }}"
       register: backend
 
-    - fail: msg="backend organism failed to return content"
-      when: "'List Create Organisms' not in item.content"
+    - fail: msg="backend root failed to return content"
+      when: "'Backend Root' not in item.content"
       with_items: "{{ backend.results }}"
