@@ -46,20 +46,8 @@ server {
   # Add index.php to the list if you are using PHP
   index index.html index.htm;
 
-  # custom error page
-  error_page 503 /maintenance.html;
-
-  location = /maintenance.html {
-    root /usr/share/nginx/html/;
-  }
-
   # robots.txt location
   location = /robots.txt {
-    root /usr/share/nginx/html/;
-  }
-
-  # favicon image position
-  location = /favicon.ico {
     root /usr/share/nginx/html/;
   }
 
@@ -161,7 +149,7 @@ server {
     # check if site is under mantainance: if I found this file, I will
     # return a 503 page (defined upper in this configuration file)
     if (-f /usr/share/nginx/html/image_maintenance.html) {
-            return 503;
+      return 503;
     }
 
     # set variable in location
