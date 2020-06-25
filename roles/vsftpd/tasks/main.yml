@@ -1,0 +1,80 @@
+---
+# ensure self signed certificates installed
+# https://wiki.debian.org/Self-Signed_Certificate
+- name: Installing self-signed certificates
+  apt:
+    name: ssl-cert
+    update_cache: yes
+    force_apt_get: yes
+    cache_valid_time: 3600
+  tags: [packages]
+
+# ensure file exists
+# create a new empty file only when the file does not yet exist
+# https://stackoverflow.com/a/34929776
+- name: allow just some users to login
+  copy:
+    content: ""
+    dest: /etc/vsftpd.allowed_users
+    force: no
+    group: sys
+    owner: root
+    mode: 0644
+  tags: [configure]
+
+# tasks file for vsftpd
+- name: Execute base tasks from  bertvv.vsftpd
+  include_role:
+    name:  bertvv.vsftpd
+  tags: [configure]
+
+# load and execute stuff from ufw role
+- name: Enable ufw for vsftpd
+  include_role:
+    name: ufw
+    tasks_from: vsftpd
+  tags: [configure, ufw_role]
+
+# copy ftplogin file
+# https://www.digitalocean.com/community/tutorials/how-to-set-up-vsftpd-for-a-user-s-directory-on-debian-10#step-8-%E2%80%94-disabling-shell-access-(optional)
+- name: copy ftponly in /bin/ directory
+  copy:
+    src: ftponly
+    dest: /bin/ftponly
+    mode: '0755'
+  tags: [ftp-user, configure]
+
+- name: add ftplogin to valid shell list
+  lineinfile:
+    path: /etc/shells
+    line: /bin/ftponly
+  tags: [ftp-user, configure]
+
+- name: Create ftp directory
+  file:
+    path: /home/ftp/
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: '0755'
+  tags: [ftp-user, configure]
+
+- name: copy add_ftp_user.sh script in /usr/local/bin/
+  copy:
+    src: add_ftp_user.sh
+    dest: /usr/local/bin/
+    mode: '0755'
+  tags: [ftp-user, configure]
+
+- name: copy del_ftp_user.sh script in /usr/local/bin/
+  copy:
+    src: del_ftp_user.sh
+    dest: /usr/local/bin/
+    mode: '0755'
+  tags: [ftp-user, configure]
+
+- name: Enable fail2ban for vsftpd
+  include_role:
+    name: fail2ban
+    tasks_from: vsftpd
+  tags: [configure, fail2ban_role]

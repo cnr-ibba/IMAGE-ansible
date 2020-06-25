@@ -1,0 +1,79 @@
+---
+# defaults ports for vsftpd
+ftp_listen_port: 21
+ftp_data_port: 20
+pasv_min_port: 30000
+pasv_max_port: 30999
+
+# default certificate files for vsftpd
+rsa_cert_file: /etc/ssl/certs/ssl-cert-snakeoil.pem
+rsa_private_key_file: /etc/ssl/private/ssl-cert-snakeoil.key
+
+# VSFTP options not managed directly by ansible role
+vsftpd_options:
+  - key: listen_port
+    value: "{{ ftp_listen_port }}"
+  - key: ftp_data_port
+    value: "{{ ftp_data_port }}"
+  - key: pasv_min_port
+    value: "{{ pasv_min_port }}"
+  - key: pasv_max_port
+    value: "{{ pasv_max_port }}"
+  - key: chroot_local_user
+    value: 'YES'
+  - key: allow_writeable_chroot
+    value: 'YES'
+  - key: pam_service_name
+    value: vsftpd
+  # VSFTPD logging
+  - key: vsftpd_log_file
+    value: /var/log/vsftpd.log
+  - key: dual_log_enable
+    value: 'YES'
+  - key: xferlog_enable
+    value: 'YES'
+  - key: xferlog_file
+    value: /var/log/xferlog
+  - key: log_ftp_protocol
+    value: 'YES'
+  - key: xferlog_std_format
+    value: 'NO'
+  - key: user_sub_token
+    value: '$USER'
+  - key: local_root
+    value: '/home/ftp/$USER/'
+  # https://help.ubuntu.com/community/vsftpd#To_allow_just_some_users_to_login:
+  - key: userlist_deny
+    value: 'NO'
+  - key: userlist_enable
+    value: 'YES'
+  - key: userlist_file
+    value: /etc/vsftpd.allowed_users
+  # Paths to your letsencrypt files
+  - key: rsa_cert_file
+    value: "{{ rsa_cert_file }}"
+  - key: rsa_private_key_file
+    value: "{{ rsa_private_key_file }}"
+  - key: ssl_enable
+    value: 'YES'
+  - key: allow_anon_ssl
+    value: 'NO'
+  # Options to force all communications over SSL - why would you want to
+  # allow clear these days? Comment them out if you don't want to force
+  # SSL though
+  - key: debug_ssl
+    value: 'NO'
+  - key: force_local_data_ssl
+    value: 'YES'
+  - key: force_local_logins_ssl
+    value: 'YES'
+  - key: ssl_tlsv1
+    value: 'YES'
+  - key: ssl_sslv2
+    value: 'NO'
+  - key: ssl_sslv3
+    value: 'NO'
+  - key: require_ssl_reuse
+    value: 'NO'
+  - key: ssl_ciphers
+    value: 'HIGH'

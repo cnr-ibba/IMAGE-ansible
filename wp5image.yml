@@ -29,6 +29,8 @@
       tags: ['letsencrypt', 'image']
     - role: logwatch
       tags: logwatch
+    - role: vsftpd
+      tags: vsftpd
     - role: user
       tags: user
     - role: injecttool

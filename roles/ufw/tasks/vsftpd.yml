@@ -1,0 +1,13 @@
+# Custom vsftp port
+- name: Allow vsftp on user defined ports
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items:
+    - { rule: 'allow', port: '{{ ftp_data_port }}', proto: 'tcp' }
+    - { rule: 'allow', port: '{{ ftp_listen_port }}', proto: 'tcp' }
+    # to allow explicit TLS: https://serverfault.com/a/694438
+    - { rule: 'allow', port: '990', proto: 'tcp' }
+    - { rule: 'allow', port: '{{ pasv_min_port }}:{{ pasv_max_port }}', proto: 'tcp' }
+  tags: [configure]

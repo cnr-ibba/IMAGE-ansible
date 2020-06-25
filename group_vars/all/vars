@@ -14,3 +14,11 @@ docker_compose_path: /usr/local/bin/docker-compose
 # packages for building IMAGE-Portal project
 nodejs_npm_global_packages:
   - name: '@angular/cli'
+
+# configured domain names
+domain_name: image2020genebank.eu
+old_domain_name: wp5image.eu
+
+# let's encrypt certificate files for vsftpd
+rsa_cert_file: /etc/letsencrypt/live/{{ domain_name }}/fullchain.pem
+rsa_private_key_file: /etc/letsencrypt/live/{{ domain_name }}/privkey.pem
