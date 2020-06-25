@@ -1,0 +1,24 @@
+---
+# https://www.mydailytutorials.com/using-ansible-find-module-search-filesfolder/
+- name: search volume by-id
+  find:
+    paths: /dev/disk/by-id/
+    file_type: link
+    patterns: '*image-data*'
+  register: files_matched
+  tags: configure
+
+- debug:
+    msg: "Found {{ files_matched.files }}"
+  tags: configure
+
+# tasks file for volume
+- name: Mount up device by UUID
+  mount:
+    path: /mnt/image_data
+    src: "{{ files_matched.files[0].path }}"
+    fstype: ext4
+    opts: defaults,nofail,discard
+    state: mounted
+  when: files_matched.files
+  tags: configure

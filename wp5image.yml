@@ -31,6 +31,8 @@
       tags: logwatch
     - role: vsftpd
       tags: vsftpd
+    - role: volume
+      tags: volume
     - role: user
       tags: user
     - role: injecttool
