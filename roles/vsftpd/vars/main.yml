@@ -1,0 +1,11 @@
+---
+# vars file for vsftpd
+
+# If enabled, log output goes to the system log (journalctl -u vsftpd.service)
+vsftpd_syslog_enable: false
+
+# Specifies whether anonymous logins are permitted or not.
+vsftpd_anonymous_enable: false
+
+# Specifies whether logins from registered users are permitted or not.
+vsftpd_local_enable: true

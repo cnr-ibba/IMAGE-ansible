@@ -26,3 +26,7 @@ ssl_options: /etc/letsencrypt/options-ssl-nginx.conf
 ssl_dhparam: /etc/letsencrypt/ssl-dhparams.pem
 old_domain_ssl_certificate: /etc/letsencrypt/live/wp5image.eu/fullchain.pem
 old_domain_ssl_certificate_key: /etc/letsencrypt/live/wp5image.eu/privkey.pem
+
+# let's encrypt certificate files for vsftpd
+rsa_cert_file: /etc/letsencrypt/live/{{ domain_name }}/fullchain.pem
+rsa_private_key_file: /etc/letsencrypt/live/{{ domain_name }}/privkey.pem
