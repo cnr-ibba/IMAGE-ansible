@@ -61,25 +61,14 @@ server {
     rewrite /image/(.*) $scheme://{{ injecttool_server_name }}/$1 last;
   }
 
+  # add a trailing slash to data_portal location
+  location /data_portal {
+    return 307 /data_portal/;
+  }
+
   location /data_portal/ {
-    # set variable in location
-    set $my_port 26081;
-
-    # CORS enabled in Common Data Pool
-
-    # Add info to webpages
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Host $host:$my_port;
-    proxy_set_header X-Forwarded-Server $host;
-    proxy_set_header X-Forwarded-Port $my_port;
-    proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_pass_header Set-Cookie;
-
-    # Subitting a request to docker service
-    proxy_pass http://127.0.0.1:$my_port;
-    proxy_redirect http://$host:$my_port/ $scheme://$http_host/;
+    # temporary redirect to another domain
+    rewrite /data_portal/(.*) $scheme://{{ cdp_server_name }}/$1 last;
   }
 
   # final location: this means that if you say
@@ -154,6 +143,54 @@ server {
 
     # set variable in location
     set $my_port 26080;
+
+    # Add info to webpages
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Host $host:$my_port;
+    proxy_set_header X-Forwarded-Server $host;
+    proxy_set_header X-Forwarded-Port $my_port;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_pass_header Set-Cookie;
+
+    # Subitting a request to docker service
+    proxy_pass http://127.0.0.1:$my_port;
+    proxy_redirect http://$host:$my_port/ $scheme://$http_host/;
+  }
+}
+
+# Common Data Pool server
+server {
+  listen 80;
+  listen [::]:80;
+  server_name {{ cdp_server_name }};
+
+  # SSL configuration for CDP
+
+  # this is the default root directory. /usr/share/nginx/html will contain
+  # accessory files, like image_maintenance or robots.txt that are not stored
+  # in the same site location
+  root /var/www/html;
+
+  # Add index.php to the list if you are using PHP
+  index index.html index.htm;
+
+  # robots.txt location
+  location = /robots.txt {
+    root /usr/share/nginx/html/;
+  }
+
+  # favicon image position
+  location = /favicon.ico {
+    root /usr/share/nginx/html/;
+  }
+
+  location / {
+    # set variable in location
+    set $my_port 26081;
+
+    # CORS enabled in Common Data Pool
 
     # Add info to webpages
     proxy_set_header Host $host;

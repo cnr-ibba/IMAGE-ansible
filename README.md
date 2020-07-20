@@ -29,6 +29,7 @@ You need to configure your `DNS` and set up those domains to point to the create
 ```
 test.wp5image.eu
 injecttest.wp5image.eu
+apitest.image2020genebank.eu
 test.image2020genebank.eu
 injecttest.image2020genebank.eu
 ```
