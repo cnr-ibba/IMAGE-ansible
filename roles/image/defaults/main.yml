@@ -1,2 +1,4 @@
+# define this variables in your group_vars vars files
 image_server_name: '_'
 injecttool_server_name: '_'
+cdp_server_name: '_'

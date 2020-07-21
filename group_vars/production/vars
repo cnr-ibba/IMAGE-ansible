@@ -1,9 +1,8 @@
 biosample_api_root: "https://submission.ebi.ac.uk"
 biosample_url: "https://www.ebi.ac.uk/biosamples/samples"
-domain_name: image2020genebank.eu
 ebi_aap_api_auth: "https://api.aai.ebi.ac.uk"
 image_server_name: www.image2020genebank.eu
 injecttool_server_name: inject.image2020genebank.eu
-old_domain_name: wp5image.eu
+cdp_server_name: api.image2020genebank.eu
 old_image_server_name: www.wp5image.eu
 old_injecttool_server_name: inject.wp5image.eu
