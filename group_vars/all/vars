@@ -14,3 +14,7 @@ docker_compose_path: /usr/local/bin/docker-compose
 # packages for building IMAGE-Portal project
 nodejs_npm_global_packages:
   - name: '@angular/cli'
+
+# common variables
+domain_name: image2020genebank.eu
+old_domain_name: wp5image.eu
