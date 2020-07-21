@@ -20,6 +20,26 @@
     state: absent
   tags: ['image-data']
 
+# ensure self signed certificates installed
+# https://wiki.debian.org/Self-Signed_Certificate
+- name: Installing self-signed certificates
+  apt:
+    name: ssl-cert
+    update_cache: yes
+    force_apt_get: yes
+    cache_valid_time: 3600
+  tags: ['packages', 'image-configure', 'configure']
+
+- name: copy self-signed ssl params
+  copy: src=ssl-params.conf dest=/etc/nginx/snippets/ssl-params.conf owner=root group=root
+  notify: Reload Nginx
+  tags: ['image-configure', 'configure']
+
+- name: Download latest 4096 dbhparams
+  get_url:
+    url: https://2ton.com.au/dhparam/4096
+    dest: /etc/nginx/dhparam.pem
+
 - name: Copy nginx configuration for wp5image.eu domain
   template:
     src: wp5image.conf.j2
@@ -63,7 +83,6 @@
   when: image2020genebank.stat.exists
   tags: ['image-configure', 'configure']
   notify: Reload Nginx
-
 
 - name: Copy maintenance page
   copy: src=maintenance.html dest=/usr/share/nginx/html owner=root group=root

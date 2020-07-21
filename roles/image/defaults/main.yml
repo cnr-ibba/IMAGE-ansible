@@ -2,3 +2,11 @@
 image_server_name: '_'
 injecttool_server_name: '_'
 cdp_server_name: '_'
+
+# default certificate files
+ssl_certificate: /etc/ssl/certs/ssl-cert-snakeoil.pem
+ssl_certificate_key: /etc/ssl/private/ssl-cert-snakeoil.key
+ssl_options: /etc/nginx/snippets/ssl-params.conf
+ssl_dhparam: /etc/nginx/dhparam.pem
+old_domain_ssl_certificate: /etc/ssl/certs/ssl-cert-snakeoil.pem
+old_domain_ssl_certificate_key: /etc/ssl/private/ssl-cert-snakeoil.key

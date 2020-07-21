@@ -16,24 +16,18 @@
 # Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
 ##
 
-# Default server configuration
-# redirect all non-www request to www on new domain
-server {
-  listen      80;
-  listen      [::]:80;
-  server_name {{ old_domain_name }};
-  return 307 http://{{ image_server_name }}$request_uri;
-}
-
-
 # Web portal server
-# readirect all request to the new domain
+# redirect all request to the new domain
 server {
-  listen 80;
-  listen [::]:80;
+  listen 443 ssl;
+  listen [::]:443 ssl;
   server_name {{ old_image_server_name }};
 
-  # SSL configuration for data portal
+  # SSL configuration
+  ssl_certificate {{ old_domain_ssl_certificate }};
+  ssl_certificate_key {{ old_domain_ssl_certificate_key }};
+  include {{ ssl_options }};
+  ssl_dhparam {{ ssl_dhparam }};
 
   # redirect all traffic
   return 307 http://{{ image_server_name }}$request_uri;
@@ -41,14 +35,56 @@ server {
 
 
 # injecttool server
-# readirect all request to the new domain
+# redirect all request to the new domain
+server {
+  listen 443 ssl;
+  listen [::]:443 ssl;
+  server_name {{ old_injecttool_server_name }};
+
+  # SSL configuration
+  ssl_certificate {{ old_domain_ssl_certificate }};
+  ssl_certificate_key {{ old_domain_ssl_certificate_key }};
+  include {{ ssl_options }};
+  ssl_dhparam {{ ssl_dhparam }};
+
+  # redirect all traffic
+  return 307 http://{{ injecttool_server_name }}$request_uri;
+}
+
+# redirect traffic to https port
+server {
+  listen 80;
+  listen [::]:80;
+  server_name {{ old_image_server_name }};
+  return 307 https://{{ image_server_name }}$request_uri;
+}
+
 server {
   listen 80;
   listen [::]:80;
   server_name {{ old_injecttool_server_name }};
+  return 307 https://{{ injecttool_server_name }}$request_uri;
+}
 
-  # SSL configuration for InjectTool
+# redirect all non-www request to www
+server {
+  listen      80;
+  listen      [::]:80;
+  server_name {{ old_domain_name }};
+  return 307 https://{{ image_server_name }}$request_uri;
+}
 
-  # redirect all traffic
-  return 307 http://{{ injecttool_server_name }}$request_uri;
+
+server {
+  listen 443;
+  listen [::]:443;
+  server_name {{ old_domain_name }};
+
+  # define certificates, even for this redirect
+  ssl_certificate {{ old_domain_ssl_certificate }};
+  ssl_certificate_key {{ old_domain_ssl_certificate_key }};
+  include {{ ssl_options }};
+  ssl_dhparam {{ ssl_dhparam }};
+
+  return 307 https://{{ image_server_name }}$request_uri;
 }

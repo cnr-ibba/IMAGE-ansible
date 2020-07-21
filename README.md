@@ -1,15 +1,15 @@
 IMAGE-ansible
 =============
 
-Instructions on how to setUp the wp5image web server
+Instructions on how to set up the wp5image web server
 
 Set Up
 ------
 
 You require a `vault_pass` in order to decrypt encrypetd information tracked in
-git repository. You need also to set up a machine a provide it remote access
+git repository. You need also to set up a machine and provide a remote access
 through SSH server (using SSH keys is strongly recommended). This project can't
-handle it for you, you need to provide this requirements by your self
+handle it for you, you need to provide this requirements by yourself
 
 All these instructions are referred to a [digitalocean](https://cloud.digitalocean.com)
 docker image instance and they are optimized in such environment
@@ -101,26 +101,26 @@ $ ansible-playbook --limit production playbooks/ssmtp.yml
 Install all stuff
 -----------------
 
-You may want to install all stuff with or without SSL configuration provided
-using [letsencrypt](https://letsencrypt.org/) (in such case you will need a
+You may want to install all stuff with self-signed certificates or with SSL configuration provided
+by [letsencrypt](https://letsencrypt.org/) (in such case you will need a
 registered domain and DNS configured to your target machine).
 
-### Install without certificates
+### Install with custom certificates
+
+Override the default `image` vars by setting your certificate location paths, for example
+in `group_vars/all/vars` file:
 
 ```
-$ ansible-playbook wp5image.yml --limit production --skip-tags='letsencrypt'
+# letsencrypt certificate files
+ssl_certificate: /etc/letsencrypt/live/image2020genebank.eu/fullchain.pem
+ssl_certificate_key: /etc/letsencrypt/live/image2020genebank.eu/privkey.pem
+ssl_options: /etc/letsencrypt/options-ssl-nginx.conf
+ssl_dhparam: /etc/letsencrypt/ssl-dhparams.pem
+old_domain_ssl_certificate: /etc/letsencrypt/live/wp5image.eu/fullchain.pem
+old_domain_ssl_certificate_key: /etc/letsencrypt/live/wp5image.eu/privkey.pem
 ```
 
-### Install with certificates
-
-The `letsencrypt` role relies on `image` role by adding *SSL* stuff to *NGINX*
-configuration file. If you need to run the `image` role, you need to call also
-the `letsencrypt` role (this is already defined in `digitalocean.yml` playbook by
-setting the `image` tag on both roles). Configure the whole environment with:
-
-```
-$ ansible-playbook wp5image.yml --limit production
-```
+These files are not provided by ansible, you will need to set up letsencrypt before.
 
 ### Other useful commands:
 
