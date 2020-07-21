@@ -24,8 +24,8 @@ server {
   server_name {{ old_image_server_name }};
 
   # SSL configuration
-  ssl_certificate {{ ssl_certificate }};
-  ssl_certificate_key {{ ssl_certificate_key }};
+  ssl_certificate {{ old_domain_ssl_certificate }};
+  ssl_certificate_key {{ old_domain_ssl_certificate_key }};
   include {{ ssl_options }};
   ssl_dhparam {{ ssl_dhparam }};
 
@@ -42,8 +42,8 @@ server {
   server_name {{ old_injecttool_server_name }};
 
   # SSL configuration
-  ssl_certificate {{ ssl_certificate }};
-  ssl_certificate_key {{ ssl_certificate_key }};
+  ssl_certificate {{ old_domain_ssl_certificate }};
+  ssl_certificate_key {{ old_domain_ssl_certificate_key }};
   include {{ ssl_options }};
   ssl_dhparam {{ ssl_dhparam }};
 
@@ -81,8 +81,8 @@ server {
   server_name {{ old_domain_name }};
 
   # define certificates, even for this redirect
-  ssl_certificate {{ ssl_certificate }};
-  ssl_certificate_key {{ ssl_certificate_key }};
+  ssl_certificate {{ old_domain_ssl_certificate }};
+  ssl_certificate_key {{ old_domain_ssl_certificate_key }};
   include {{ ssl_options }};
   ssl_dhparam {{ ssl_dhparam }};
 

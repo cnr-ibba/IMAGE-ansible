@@ -18,3 +18,11 @@ nodejs_npm_global_packages:
 # common variables
 domain_name: image2020genebank.eu
 old_domain_name: wp5image.eu
+
+# letsencrypt certificate files
+ssl_certificate: /etc/letsencrypt/live/image2020genebank.eu/fullchain.pem
+ssl_certificate_key: /etc/letsencrypt/live/image2020genebank.eu/privkey.pem
+ssl_options: /etc/letsencrypt/options-ssl-nginx.conf
+ssl_dhparam: /etc/letsencrypt/ssl-dhparams.pem
+old_domain_ssl_certificate: /etc/letsencrypt/live/wp5image.eu/fullchain.pem
+old_domain_ssl_certificate_key: /etc/letsencrypt/live/wp5image.eu/privkey.pem
