@@ -23,10 +23,10 @@
       tags: nginx
     - role: ufw
       tags: ufw
-    - role: image
-      tags: image
     - role: letsencrypt
       tags: ['letsencrypt', 'image']
+    - role: image
+      tags: image
     - role: logwatch
       tags: logwatch
     - role: user
