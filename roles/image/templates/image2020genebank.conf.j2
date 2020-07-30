@@ -16,9 +16,35 @@
 # Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
 ##
 
-# the django-channels component
+# the django-channels component (required by injecttool)
 upstream channels-backend {
   server localhost:28001;
+}
+
+# captures requests that do not match your domain and terminates the connection.
+# For example, a direct HTTP request to your server’s IP address would be handled
+# by this block:
+server {
+  listen      80 default_server;
+  server_name "";
+  return      444;
+}
+
+# For https, you actually need to point nginx at ssl cert/key. According to documentation,
+# nginx only looks at 'Host' header and does not look at TLS SNI when matching server_name.
+# This means that nginx must be able to accept/decrypt ssl connection before it can inspect the Host header.
+# The cert/key can be any cert/key e.g. self-signed.
+# https://serverfault.com/a/841643
+server {
+  listen      443 ssl default_server;
+  server_name "";
+  return      444;
+
+  # SSL configuration
+  ssl_certificate {{ ssl_certificate }};
+  ssl_certificate_key {{ ssl_certificate_key }};
+  include {{ ssl_options }};
+  ssl_dhparam {{ ssl_dhparam }};
 }
 
 # web portal server
@@ -233,7 +259,7 @@ server {
   return 307 https://$host$request_uri;
 }
 
-# redirect all non-www request to www
+# redirect all non-www request to www (80 port)
 server {
   listen      80;
   listen      [::]:80;
@@ -241,6 +267,7 @@ server {
   return 307 https://{{ image_server_name }}$request_uri;
 }
 
+# redirect all non-www request to www (443 port)
 server {
   listen 443;
   listen [::]:443;

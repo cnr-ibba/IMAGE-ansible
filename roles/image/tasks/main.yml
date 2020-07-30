@@ -101,6 +101,6 @@
 - name: Set image maintenance page
   file:
     src: /usr/share/nginx/html/maintenance.html
-    dest: /usr/share/nginx/html/image_maintenance.html
+    dest: /usr/share/nginx/html/_image_maintenance.html
     state: link
   tags: ['image-data']
