@@ -22,7 +22,7 @@ variable "SSH_KEYS" {
 }
 
 # Create a new Web Droplet. Using variables and conditional to determine image name
-resource "digitalocean_droplet" "server" {
+resource "digitalocean_droplet" "wp5image" {
   image  = var.IMAGE
   name   = var.ENV == "production" ? "wp5image" : "wp5image-test"
   region = var.REGION
@@ -34,6 +34,11 @@ resource "digitalocean_droplet" "server" {
 }
 
 output "wp5image_address" {
-  value       = digitalocean_droplet.server.ipv4_address
+  value       = digitalocean_droplet.wp5image.ipv4_address
   description = "The private IP address of the main server instance."
+}
+
+output "wp5image_id" {
+  value       = digitalocean_droplet.wp5image.id
+  description = "The ID the main server instance."
 }

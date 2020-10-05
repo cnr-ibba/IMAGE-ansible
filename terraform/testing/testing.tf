@@ -10,6 +10,18 @@ module "droplets" {
   ]
 }
 
+module "firewalls" {
+  source      = "../modules/firewalls"
+  ENV         = var.ENV
+  DROPLET_IDS = [module.droplets.wp5image_id]
+}
+
+module "domains" {
+  source  = "../modules/domains"
+  DOMAIN  = data.digitalocean_domain.domain.name
+  ADDRESS = module.droplets.wp5image_address
+}
+
 # retrieves output from a inner module
 output "droplet_address" {
   value       = module.droplets.wp5image_address

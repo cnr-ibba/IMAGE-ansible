@@ -10,3 +10,8 @@ variable "SIZE" {
   type    = string
   default = "s-1vcpu-1gb"
 }
+
+variable "DOMAIN_NAME" {
+  type    = string
+  default = "paolocozzi.cloud"
+}
