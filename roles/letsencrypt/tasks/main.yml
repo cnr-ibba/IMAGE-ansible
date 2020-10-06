@@ -15,3 +15,11 @@
     update_cache: true
     cache_valid_time: 3600
   tags: packages
+
+- name: enable NgINX reload after certificate renewal
+  blockinfile:
+    path: /etc/letsencrypt/cli.ini
+    marker: "# {mark} ANSIBLE NgINX reload"
+    block: |
+      # https://blog.arnonerba.com/2019/01/lets-encrypt-how-to-automatically-restart-nginx-with-certbot
+      deploy-hook = systemctl reload nginx
