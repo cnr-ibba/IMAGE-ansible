@@ -31,6 +31,9 @@ resource "digitalocean_droplet" "wp5image" {
   # The ssh keys to put on the server so we can access it. Read in through a
   # data source
   ssh_keys = var.SSH_KEYS
+
+  # should I resize disk when resizing a droplet?
+  resize_disk = false
 }
 
 output "wp5image_address" {
