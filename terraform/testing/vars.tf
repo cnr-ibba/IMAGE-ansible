@@ -15,3 +15,8 @@ variable "DOMAIN_NAME" {
   type    = string
   default = "paolocozzi.cloud"
 }
+
+variable "SUBDOMAINS" {
+  type = list(string)
+  default = ["test", "injecttest", "apitest"]
+}

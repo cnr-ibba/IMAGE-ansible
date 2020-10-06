@@ -9,7 +9,6 @@ variable "ADDRESS" {
 
 variable "SUBDOMAINS" {
   type = list(string)
-  default = ["test", "injecttest", "apitest"]
 }
 
 resource "digitalocean_record" "wp5image" {

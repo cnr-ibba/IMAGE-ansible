@@ -20,6 +20,7 @@ module "domains" {
   source  = "../modules/domains"
   DOMAIN  = data.digitalocean_domain.domain.name
   ADDRESS = module.droplets.wp5image_address
+  SUBDOMAINS = var.SUBDOMAINS
 }
 
 # retrieves output from a inner module

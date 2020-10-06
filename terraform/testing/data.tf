@@ -10,3 +10,7 @@ data "digitalocean_ssh_key" "desktop" {
 data "digitalocean_ssh_key" "debian" {
   name = "paolo@debian"
 }
+
+data "digitalocean_domain" "domain" {
+  name = var.DOMAIN_NAME
+}
