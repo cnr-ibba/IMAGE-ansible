@@ -17,16 +17,42 @@ docker image instance and they are optimized in such environment
 Instantiate the testing machine
 -------------------------------
 
-To set up the testing machine, you need to export your DigitalOcan token in the
-`DIGITALOCEAN_ACCESS_TOKEN`. Then call
+Go into the `terraform/testing` directory and set your custom `.tfvars`, specifing
+those attributes:
 
 ```
-$ python scripts/create_droplet.py
+DO_TOKEN = <your token>
 ```
 
-You need to configure your `DNS` and set up those domains to point to the created droplet:
+Then instantiate the testing resource by calling
 
 ```
+$ terraform plan -out changes.tfplan
+$ terraform apply "changes.tfplan"
+```
+
+Track the returned *ip address* or call
+
+```
+$ terraform output
+```
+
+To return the *ip address* for the testing machine. To add such *ip address* in
+image domain records, move first into `../production` directory (even here you have
+to define a `.tfvars` file) and call
+
+```
+$ terraform plan -out changes.tfplan
+$ terraform apply "changes.tfplan"
+```
+
+When requested, type the testing *ip address* you got before in order to add custom DNS records.
+**Only testing subdomains are added in production environment (for the moment)**.
+
+Those are all the subdomains that will be created and added to the testing droplet:
+
+```
+apitest.wp5image.eu
 test.wp5image.eu
 injecttest.wp5image.eu
 apitest.image2020genebank.eu
