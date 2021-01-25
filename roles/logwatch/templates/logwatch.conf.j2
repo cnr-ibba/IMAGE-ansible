@@ -88,6 +88,9 @@ Service = "-zz-sys"         # Prevents execution of zz-sys service, which
                             # prints useful system configuration info.
 Service = "-eximstats"      # Prevents execution of eximstats service, which
                             # is a wrapper for the eximstats program.
+# disabling very noisy logs
+Service = "-fail2ban"       # disable fail2ban reports
+Service = "-sshd"           # disable sshd reports
 # If you only cared about FTP messages, you could use these 2 lines
 # instead of the above:
 #Service = ftpd-messages   # Processes ftpd messages in /var/log/messages
